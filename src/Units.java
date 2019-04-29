@@ -8,32 +8,43 @@ public abstract class Units {
 	
 	private TiledMap map;
 	
-	// Every sprite has its image
-	private Image unit;
+	// Every unit has its image
+	protected Image image;
 	
-	// Every sprite has its speed
-	private float speed;
+	// Every unit has its speed
+	protected float speed;
 	
-	// Every sprite has its position
+	// Every unit has its position
 	// Current position in the world perspective
 	private Vector2f pos;
 	
 	// Angle from current to destination position
-	// I assume every character move based on an angle so I put this here instead of the child class
 	private double angle;
 	
-	public Units(float x, float y, TiledMap map, Image image, float speed) throws SlickException {
-		pos = new Vector2f(x, y);
+	public Units(float x, float y, TiledMap map) throws SlickException {
+		this.pos = new Vector2f(x, y);
 		this.map = map;
-		this.unit = image;
-		this.speed = speed;
 	}
 
-	// Differnt sprites can have different update method so make this abstract
+	// Differnt units can have different update method so make this abstract
 	public abstract void update(int delta, Vector2f dest);
-
+	
 	public void render(Graphics g) {
-		unit.drawCentered(pos.x, pos.y);
+		image.drawCentered(pos.x, pos.y);
+	}
+	
+	public void move(int delta, Vector2f dest) {
+		// Set the angle to the destination for this unit
+		angle = getAngle(pos.x, pos.y, dest.x, dest.y);
+		
+		// Potential position after each update
+		Vector2f nextPos = new Vector2f((float)(pos.x + speed * delta * Math.cos(angle)), 
+				(float)(pos.y + speed * delta * Math.sin(angle)));
+		
+		// Check if the next position is solid, if not then update the current position
+		if(pos.distance(dest)>App.MIN_DISTANCE && isSolid(nextPos)==false) {
+			setPos(nextPos);
+		}
 	}
 
 	// Check if the current tile is solid or not
@@ -66,21 +77,10 @@ public abstract class Units {
 		else {
 			this.pos = newPos;
 		}
-	}
+	}	
 	
-	public double getAngle() {
-		return this.angle;
-	}
-	
-	public void setAngle(double angle) {
-		this.angle = angle;
-	}
-
-	public float getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(float speed) {
-		this.speed = speed;
+	// Helper method to calculate the angle that between two points
+	public static double getAngle(float x1, float y1, float x2, float y2) {
+		return (Math.atan2(y2-y1, x2-x1));
 	}
 }
