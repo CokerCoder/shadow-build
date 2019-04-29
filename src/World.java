@@ -14,21 +14,16 @@ import org.newdawn.slick.tiled.TiledMap;
 
 public class World {
 	
-	// Constants
-	public static final int LAYER_INDEX = 0;
-	public static final float MIN_DISTANCE = 0.25f;
-	
-	public static final float PLAYER_SPEED = 0.25f;
-	
 	// Set the local variables for the map, player and camera
 	private final TiledMap map;
-	private final Sprite player;
+	private final Units player;
 	private final Camera camera;
 	
 	// Size of the map in pixels
 	private int mapWidth, mapHeight;
 	
 	// Get the destination position and store it into a vector
+	// This is updated when pressing the mouse, initilised at (0, 0)
 	private Vector2f dest = new Vector2f(0, 0);
 
 
@@ -40,7 +35,7 @@ public class World {
 		
 		// Initialise the player at the same position as the destination position
 		// with a speed of 0.25
-		player = new Player(dest.x, dest.y, map, new Image("assets/scout.png"), PLAYER_SPEED);
+		player = new Scout(dest.x, dest.y, map, new Image("assets/scout.png"), App.PLAYER_SPEED);
 		// Initialise the camera
 		camera = new Camera(map, mapWidth, mapHeight);
 	}

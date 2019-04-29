@@ -32,7 +32,7 @@ public class Camera {
 	}
 	
 	// Calculate the movement along the x and y axis
-	public void translate (Graphics g, Sprite player) {
+	public void translate (Graphics g, Units currUnit) {
 		
 		/* The number 16 means the number of pixels of the map
 		 * that we need to let the render method to render this much more
@@ -42,22 +42,22 @@ public class Camera {
 		 */
 		
 		// If the player is at left edge of the map, keep the camera at left so the player cannot go across the boundry
-		if(player.getPos().x-App.WINDOW_WIDTH/2+16 < 0)
+		if(currUnit.getPos().x-App.WINDOW_WIDTH/2+16 < 0)
 			transX = 0;
 		// ...right edge
-		else if(player.getPos().x+App.WINDOW_WIDTH/2+16 > mapWidth)
+		else if(currUnit.getPos().x+App.WINDOW_WIDTH/2+16 > mapWidth)
 			transX = -mapWidth+App.WINDOW_WIDTH;
 		// Otherwise update the movement
 		else
-			transX = -player.getPos().x+App.WINDOW_WIDTH/2-16;
+			transX = -currUnit.getPos().x+App.WINDOW_WIDTH/2-16;
 		
 		// Vise versa
-		if(player.getPos().y-App.WINDOW_HEIGHT/2+16 < 0)
+		if(currUnit.getPos().y-App.WINDOW_HEIGHT/2+16 < 0)
 			transY = 0;
-		else if(player.getPos().y+App.WINDOW_HEIGHT/2+16 > mapHeight)
+		else if(currUnit.getPos().y+App.WINDOW_HEIGHT/2+16 > mapHeight)
 			transY = -mapHeight+App.WINDOW_HEIGHT;
 		else
-			transY = -player.getPos().y+App.WINDOW_HEIGHT/2-16;
+			transY = -currUnit.getPos().y+App.WINDOW_HEIGHT/2-16;
 		
 		// Apply the transformation and update the camera location
 		g.translate(transX, transY);

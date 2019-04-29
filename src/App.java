@@ -18,10 +18,16 @@ import org.newdawn.slick.Input;
  */
 public class App extends BasicGame {
     /** window width, in pixels */
-    public static final int WINDOW_WIDTH = 1024;
+    public static final int WINDOW_WIDTH = 1856;
     /** window height, in pixels */
-    public static final int WINDOW_HEIGHT = 768;
+    public static final int WINDOW_HEIGHT = 1856;
 
+	// Constants
+	public static final int LAYER_INDEX = 0;
+	public static final float MIN_DISTANCE = 0.25f;
+	
+	public static final float PLAYER_SPEED = 0.25f;
+	
     private World world;
 
     public App() {
