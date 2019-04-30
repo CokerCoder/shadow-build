@@ -14,7 +14,9 @@ public class World {
 	private final TiledMap map;
 	private final Camera camera;
 	
-	private final Units player;
+	private final Objects player;
+	private final Objects engineer;
+	
 	
 	// Size of the map in pixels
 	private int mapWidth, mapHeight;
@@ -34,12 +36,14 @@ public class World {
 		mapHeight = map.getHeight() * map.getTileHeight();
 		
 		player = new Scout(destPos.x, destPos.y, map);
-		
+		engineer = new Engineer(100, 100, map);
 		// Initialise the camera
 		camera = new Camera(map, mapWidth, mapHeight);
 	}
 	
 	public void update(Input input, int delta) {
+		
+		// Read the mouse
 		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 			// Calculate the right button position respect to the world using the function in the Camera class
 			destPos.x = camera.calcWorldX(input.getMouseX());
@@ -64,5 +68,6 @@ public class World {
 		// Display the map onto the screen
 		map.render(0, 0);
 		player.render(g);
+		engineer.render(g);
 	}
 }

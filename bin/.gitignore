@@ -1,7 +1,5 @@
-/Scout.class
-/Objects.class
-/Buildings.class
-/Resources.class
-/Builder.class
-/Engineer.class
-/Truck.class
+/Commandcentre.class
+/Factory.class
+/Pylon.class
+/Metal.class
+/Unobtainium.class

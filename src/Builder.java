@@ -10,8 +10,8 @@ public class Builder extends Units {
 	
 	public Builder(float x, float y, TiledMap map) throws SlickException {
 		super(x, y, map);
-		this.image = new Image(imageLocation);
-		this.speed = BUILDER_SPEED;
+		this.setImage(new Image(imageLocation));
+		this.setSpeed(BUILDER_SPEED);
 	}
 
 	@Override

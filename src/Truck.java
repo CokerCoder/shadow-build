@@ -10,8 +10,8 @@ public class Truck extends Units{
 	
 	public Truck(float x, float y, TiledMap map) throws SlickException {
 		super(x, y, map);
-		this.image = new Image(imageLocation);
-		this.speed = TRUCK_SPEED;
+		this.setImage(new Image(imageLocation));
+		this.setSpeed(TRUCK_SPEED);
 	}
 
 	@Override

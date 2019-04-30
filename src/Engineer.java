@@ -10,8 +10,8 @@ public class Engineer extends Units {
 	
 	public Engineer(float x, float y, TiledMap map) throws SlickException {
 		super(x, y, map);
-		this.image = new Image(imageLocation);
-		this.speed = ENGINEER_SPEED;
+		this.setImage(new Image(imageLocation));
+		this.setSpeed(ENGINEER_SPEED);
 	}
 
 	@Override

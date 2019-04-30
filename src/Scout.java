@@ -11,9 +11,10 @@ public class Scout extends Units {
 	
 	public Scout(float x, float y, TiledMap map) throws SlickException {
 		super(x, y, map);
-		this.image = new Image(imageLocation);
-		this.speed = SCOUT_SPEED;
+		super.setImage(new Image(imageLocation));
+		super.setSpeed(SCOUT_SPEED);
 	}
+
 
 	@Override
 	public void update(int delta, Vector2f dest) {
