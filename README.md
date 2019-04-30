@@ -6,4 +6,4 @@ The original project submitted for the SWEN20003 - Object Oriented Software Deve
 
 Game Design by: Eleanor McMurtry (http://github.com/noneuclideangirl)
 
-#### For more information, please see: https://github.com/yunfeijing/ShadowBuild/blob/master/spec1.pdf
+#### For more information, please see: <br /> https://github.com/yunfeijing/ShadowBuild/blob/master/part1.pdf <br /> https://github.com/yunfeijing/ShadowBuild/blob/master/part2.pdf
