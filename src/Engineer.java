@@ -16,8 +16,7 @@ public class Engineer extends Units {
 
 	@Override
 	public void update(int delta, Vector2f dest) {
-		// TODO Auto-generated method stub
-		
+		super.move(delta,  dest);
 	}
 
 }

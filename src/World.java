@@ -1,3 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
@@ -7,19 +11,25 @@ import org.newdawn.slick.tiled.TiledMap;
 /* This class contains all the objects in the game */
 
 public class World {
+	// We set the maximum objects in this world is 50
+	public static final int maximumObjects = 50;
 	
 	public static final String mapLocation = "assets/main.tmx";
+	public static final String csvLocation = "assets/objects.csv";
+	
+	public static final String SOLID_PROPERTY = "solid";
+	public static final String OCCUPIED_PROPERTY = "occupied";
 	
 	// Set the local variables for the map, player and camera
 	private final TiledMap map;
 	private final Camera camera;
 	
 	private final Objects player;
-	private final Objects engineer;
 	
-	
-	// Size of the map in pixels
-	private int mapWidth, mapHeight;
+	// Create a list contains all the objects in the world
+	private Objects[] objectList = new Objects[maximumObjects];
+	// Keep track the number of the objects
+	private int numberOfObjects = 0;
 	
 	// The destination position and store it into a vector
 	// Update when right-click anywhere, initilised at (0, 0)
@@ -30,15 +40,21 @@ public class World {
 
 
 	// Construct the World
-	public World() throws SlickException {
+	public World() throws SlickException, FileNotFoundException {
 		map = new TiledMap(mapLocation);
-		mapWidth = map.getWidth() * map.getTileWidth();
-		mapHeight = map.getHeight() * map.getTileHeight();
-		
 		player = new Scout(destPos.x, destPos.y, map);
-		engineer = new Engineer(100, 100, map);
-		// Initialise the camera
-		camera = new Camera(map, mapWidth, mapHeight);
+		// Initialise the camera with the map and its size
+		camera = new Camera(map, map.getWidth() * map.getTileWidth(), map.getHeight() * map.getTileHeight());
+		
+		// Get the initial objects
+		Scanner scanner = new Scanner(new File(csvLocation));
+        scanner.useDelimiter(",");
+        while(scanner.hasNext()){
+        	if(scanner.next().equals("command_centre")) {
+        		System.out.println(scanner.next()+" + "+scanner.next());
+        	} 
+        }
+        scanner.close();
 	}
 	
 	public void update(Input input, int delta) {
@@ -49,16 +65,14 @@ public class World {
 			destPos.x = camera.calcWorldX(input.getMouseX());
 			destPos.y = camera.calcWorldY(input.getMouseY());
 		} else if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			// Calculate the ledt button position respect to the world
+			// Calculate the left button position respect to the world
 			selectPos.x = camera.calcWorldX(input.getMouseX());
 			selectPos.y = camera.calcWorldY(input.getMouseY());
 		}
 		
-		// Check if select an object
+		// If an object is selected, update it
 		
 		/* code */
-		
-		// Update the player's position
 		player.update(delta, destPos);
 	}
 	
@@ -68,6 +82,7 @@ public class World {
 		// Display the map onto the screen
 		map.render(0, 0);
 		player.render(g);
-		engineer.render(g);
+		
+		// Loop to render all the objects
 	}
 }
