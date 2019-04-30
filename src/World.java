@@ -1,6 +1,6 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -40,21 +40,37 @@ public class World {
 
 
 	// Construct the World
-	public World() throws SlickException, FileNotFoundException {
+	public World() throws SlickException {
 		map = new TiledMap(mapLocation);
 		player = new Scout(destPos.x, destPos.y, map);
-		// Initialise the camera with the map and its size
 		camera = new Camera(map, map.getWidth() * map.getTileWidth(), map.getHeight() * map.getTileHeight());
 		
 		// Get the initial objects
-		Scanner scanner = new Scanner(new File(csvLocation));
-        scanner.useDelimiter(",");
-        while(scanner.hasNext()){
-        	if(scanner.next().equals("command_centre")) {
-        		System.out.println(scanner.next()+" + "+scanner.next());
-        	} 
-        }
-        scanner.close();
+		try (BufferedReader br =
+				new BufferedReader(new FileReader(csvLocation))) {
+				String text;
+				while ((text = br.readLine()) != null) {
+					
+					String cells[] = text.split(",");
+					String name = cells[0];
+					int x = Integer.parseInt(cells[1]);
+					int y = Integer.parseInt(cells[2]);
+					
+					if(name.equals("command_centre")) {
+						objectList[numberOfObjects++] = new Commandcentre(x, y, map);
+					} else if (name.equals("metal_mine")) {
+						objectList[numberOfObjects++] = new Metal(x, y, map);
+					} else if (name.equals("unobtainium_mine")) {
+						objectList[numberOfObjects++] = new Unobtainium(x, y, map);
+					} else if (name.equals("pylon")) {
+						objectList[numberOfObjects++] = new Pylon(x, y, map);
+					} else if (name.equals("engineer")) {
+						objectList[numberOfObjects++] = new Engineer(x, y, map);
+					}
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void update(Input input, int delta) {
@@ -84,5 +100,8 @@ public class World {
 		player.render(g);
 		
 		// Loop to render all the objects
+		for(int i=0;i<numberOfObjects;i++) {
+			objectList[i].render(g);
+		}
 	}
 }

@@ -20,9 +20,9 @@ import org.newdawn.slick.Input;
  */
 public class App extends BasicGame {
     /** window width, in pixels */
-    public static final int WINDOW_WIDTH = 1024;
+    public static final int WINDOW_WIDTH = 3000;
     /** window height, in pixels */
-    public static final int WINDOW_HEIGHT = 768;
+    public static final int WINDOW_HEIGHT = 2000;
 
 	public static final float MIN_DISTANCE = 0.25f;
 	
@@ -33,13 +33,8 @@ public class App extends BasicGame {
     }
 
     @Override
-    public void init(GameContainer gc)
-            throws SlickException {
-        try {
-			world = new World();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+    public void init(GameContainer gc) throws SlickException {
+        world = new World();
     }
 
     /** Update the game state for a frame.
