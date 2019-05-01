@@ -31,6 +31,7 @@ public class World {
 	
 	// The destination position and store it into a vector
 	// Update when right-click anywhere, initilised at (-1, -1)
+	// -1 means there is no desination currently
 	private Vector2f destPos = new Vector2f(-1, -1);
 	
 	// The position the player choose, update when left-click anywhere
@@ -45,32 +46,8 @@ public class World {
 		map = new TiledMap(mapLocation);
 		camera = new Camera(map, map.getWidth() * map.getTileWidth(), map.getHeight() * map.getTileHeight());
 		
-		// Get the initial objects
-		try (BufferedReader br =
-				new BufferedReader(new FileReader(csvLocation))) {
-				String text;
-				while ((text = br.readLine()) != null) {
-					
-					String cells[] = text.split(",");
-					String name = cells[0];
-					int x = Integer.parseInt(cells[1]);
-					int y = Integer.parseInt(cells[2]);
-					
-					if(name.equals("command_centre")) {
-						objectList[numberOfObjects++] = new Commandcentre(x, y, map);
-					} else if (name.equals("metal_mine")) {
-						objectList[numberOfObjects++] = new Metal(x, y, map);
-					} else if (name.equals("unobtainium_mine")) {
-						objectList[numberOfObjects++] = new Unobtainium(x, y, map);
-					} else if (name.equals("pylon")) {
-						objectList[numberOfObjects++] = new Pylon(x, y, map);
-					} else if (name.equals("engineer")) {
-						objectList[numberOfObjects++] = new Engineer(x, y, map);
-					}
-				}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// Load the initial objects
+		loadInitialObjects(objectList);
 	}
 	
 	public void update(Input input, int delta) {
@@ -122,13 +99,41 @@ public class World {
 		if(isAnythingSelected && objectList[selectedIndex] instanceof Units) {
 			camera.translate(g, objectList[selectedIndex]);
 		}
-			
 		// Display the map onto the screen
 		map.render(0, 0);
 		
 		// Loop to render all the objects
 		for(int i=0;i<numberOfObjects;i++) {
 			objectList[i].render(g);
+		}
+	}
+	
+	public void loadInitialObjects(Objects[] objectList) throws SlickException {
+		// Read CSV
+		try (BufferedReader br =
+				new BufferedReader(new FileReader(csvLocation))) {
+				String text;
+				while ((text = br.readLine()) != null) {
+					
+					String cells[] = text.split(",");
+					String name = cells[0];
+					int x = Integer.parseInt(cells[1]);
+					int y = Integer.parseInt(cells[2]);
+					
+					if(name.equals("command_centre")) {
+						objectList[numberOfObjects++] = new Commandcentre(x, y, map);
+					} else if (name.equals("metal_mine")) {
+						objectList[numberOfObjects++] = new Metal(x, y, map);
+					} else if (name.equals("unobtainium_mine")) {
+						objectList[numberOfObjects++] = new Unobtainium(x, y, map);
+					} else if (name.equals("pylon")) {
+						objectList[numberOfObjects++] = new Pylon(x, y, map);
+					} else if (name.equals("engineer")) {
+						objectList[numberOfObjects++] = new Engineer(x, y, map);
+					}
+				}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
