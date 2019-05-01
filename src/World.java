@@ -24,25 +24,25 @@ public class World {
 	private final TiledMap map;
 	private final Camera camera;
 	
-	private final Objects player;
-	
 	// Create a list contains all the objects in the world
 	private Objects[] objectList = new Objects[maximumObjects];
 	// Keep track the number of the objects
 	private int numberOfObjects = 0;
 	
 	// The destination position and store it into a vector
-	// Update when right-click anywhere, initilised at (0, 0)
-	private Vector2f destPos = new Vector2f(0, 0);
+	// Update when right-click anywhere, initilised at (-1, -1)
+	private Vector2f destPos = new Vector2f(-1, -1);
 	
 	// The position the player choose, update when left-click anywhere
 	private Vector2f selectPos = new Vector2f(0, 0);
 
+	
+	boolean isAnythingSelected = false;
+	int selectedIndex = -1;
 
 	// Construct the World
 	public World() throws SlickException {
 		map = new TiledMap(mapLocation);
-		player = new Scout(destPos.x, destPos.y, map);
 		camera = new Camera(map, map.getWidth() * map.getTileWidth(), map.getHeight() * map.getTileHeight());
 		
 		// Get the initial objects
@@ -68,36 +68,63 @@ public class World {
 						objectList[numberOfObjects++] = new Engineer(x, y, map);
 					}
 				}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void update(Input input, int delta) {
-		
 		// Read the mouse
 		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 			// Calculate the right button position respect to the world using the function in the Camera class
 			destPos.x = camera.calcWorldX(input.getMouseX());
 			destPos.y = camera.calcWorldY(input.getMouseY());
+
 		} else if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+			
+			// Reset the destination position
+			destPos.x = -1; destPos.y = -1;
+			
+			boolean ifNewPosIsEmpty = true;
 			// Calculate the left button position respect to the world
 			selectPos.x = camera.calcWorldX(input.getMouseX());
 			selectPos.y = camera.calcWorldY(input.getMouseY());
+			
+			for(int i=0;i<numberOfObjects;i++) {
+				if((objectList[i].getPos().distance(selectPos)<=App.SELECT_DISTANCE)) {
+					if(objectList[i] instanceof Units) {
+						isAnythingSelected = true;
+						selectedIndex = i;
+						ifNewPosIsEmpty = false;
+						break;
+					}
+					else if(objectList[i] instanceof Buildings) {
+						isAnythingSelected = true;
+						selectedIndex = i;
+						ifNewPosIsEmpty = false;
+					}
+				}
+			}
+			if(ifNewPosIsEmpty==true) {
+				// If nothing to be selected in the new mouse position, discard the selection
+				isAnythingSelected = false;
+				selectedIndex = -1;
+			}
 		}
-		
-		// If an object is selected, update it
-		
-		/* code */
-		player.update(delta, destPos);
+		// Check if the destination has updated by the right-click (x or y > 0)
+		if(isAnythingSelected && destPos.x>=0) {
+			objectList[selectedIndex].update(delta, destPos);
+		}
 	}
 	
 	public void render(Graphics g) {
-		// Firstly translate the camera based on the player's position
-		camera.translate(g, player);
+		// Firstly translate the camera based on the unit selected
+		if(isAnythingSelected && objectList[selectedIndex] instanceof Units) {
+			camera.translate(g, objectList[selectedIndex]);
+		}
+			
 		// Display the map onto the screen
 		map.render(0, 0);
-		player.render(g);
 		
 		// Loop to render all the objects
 		for(int i=0;i<numberOfObjects;i++) {

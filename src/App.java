@@ -3,8 +3,6 @@
  * by Eleanor McMurtry, University of Melbourne
  */
 
-import java.io.FileNotFoundException;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -20,11 +18,12 @@ import org.newdawn.slick.Input;
  */
 public class App extends BasicGame {
     /** window width, in pixels */
-    public static final int WINDOW_WIDTH = 3000;
+    public static final int WINDOW_WIDTH = 1024;
     /** window height, in pixels */
-    public static final int WINDOW_HEIGHT = 2000;
+    public static final int WINDOW_HEIGHT = 768;
 
 	public static final float MIN_DISTANCE = 0.25f;
+	public static final int SELECT_DISTANCE = 35;
 	
     private World world;
 

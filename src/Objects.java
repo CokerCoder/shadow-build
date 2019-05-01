@@ -14,10 +14,7 @@ public abstract class Objects {
 	
 	public abstract void update(int delta, Vector2f dest);
 	
-	// Every objects in the map has the same render method, that is to display on the screen
-	public void render(Graphics g) {
-		image.drawCentered(pos.x, pos.y);
-	}
+	public abstract void render(Graphics g);
 	
 	
 	// Getters and setters
