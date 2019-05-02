@@ -15,7 +15,7 @@ public class Builder extends Units {
 	}
 
 	@Override
-	public void update(int delta, Vector2f dest) {
+	public void update(World world) {
 		// TODO Auto-generated method stub
 		
 	}

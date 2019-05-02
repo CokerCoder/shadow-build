@@ -15,8 +15,8 @@ public class Engineer extends Units {
 	}
 
 	@Override
-	public void update(int delta, Vector2f dest) {
-		super.move(delta,  dest);
+	public void update(World world) {
+		
 	}
 
 }

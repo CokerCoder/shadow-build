@@ -1,6 +1,5 @@
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 
 // Inherited from Unit class (scout is a unit)
@@ -17,8 +16,8 @@ public class Scout extends Units {
 
 
 	@Override
-	public void update(int delta, Vector2f dest) {
+	public void update(World world) {
 		// A scout could only move around
-		super.move(delta,  dest);
+		super.move(world.getDelta(), super.getTarget());
 	}
 }

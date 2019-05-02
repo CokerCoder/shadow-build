@@ -24,15 +24,13 @@ public class World {
 	private final TiledMap map;
 	private final Camera camera;
 	
+	private Input lastInput;
+	private int lastDelta;
+	
 	// Create a list contains all the objects in the world
 	private Objects[] objectList = new Objects[maximumObjects];
 	// Keep track the number of the objects
 	private int numberOfObjects = 0;
-	
-	// The destination position and store it into a vector
-	// Update when right-click anywhere, initilised at (-1, -1)
-	// -1 means there is no desination currently
-	private Vector2f destPos = new Vector2f(-1, -1);
 	
 	// The position the player choose, update when left-click anywhere
 	private Vector2f selectPos = new Vector2f(0, 0);
@@ -51,29 +49,39 @@ public class World {
 	}
 	
 	public void update(Input input, int delta) {
+		lastInput = input;
+		lastDelta = delta;
+		
 		// Read the mouse
 		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 			// Calculate the right button position respect to the world using the function in the Camera class
+			Vector2f destPos = new Vector2f(0, 0);
 			destPos.x = camera.calcWorldX(input.getMouseX());
 			destPos.y = camera.calcWorldY(input.getMouseY());
+			
+			if(isAnythingSelected) {
+				if(objectList[selectedIndex] instanceof Units) {
+					objectList[selectedIndex].setTarget(destPos);
+				}
+			}
 
 		} else if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			
-			// Reset the destination position
-			destPos.x = -1; destPos.y = -1;
-			
 			boolean ifNewPosIsEmpty = true;
+			
 			// Calculate the left button position respect to the world
 			selectPos.x = camera.calcWorldX(input.getMouseX());
 			selectPos.y = camera.calcWorldY(input.getMouseY());
 			
 			for(int i=0;i<numberOfObjects;i++) {
 				if((objectList[i].getPos().distance(selectPos)<=App.SELECT_DISTANCE)) {
+					// Select a unit
 					if(objectList[i] instanceof Units) {
 						isAnythingSelected = true;
 						selectedIndex = i;
 						ifNewPosIsEmpty = false;
 						break;
+						
 					}
 					else if(objectList[i] instanceof Buildings) {
 						isAnythingSelected = true;
@@ -88,9 +96,8 @@ public class World {
 				selectedIndex = -1;
 			}
 		}
-		// Check if the destination has updated by the right-click (x or y > 0)
-		if(isAnythingSelected && destPos.x>=0) {
-			objectList[selectedIndex].update(delta, destPos);
+		for(int i=0;i<numberOfObjects;i++) {
+			objectList[i].update(this);
 		}
 	}
 	
@@ -109,6 +116,7 @@ public class World {
 	}
 	
 	public void loadInitialObjects(Objects[] objectList) throws SlickException {
+
 		// Read CSV
 		try (BufferedReader br =
 				new BufferedReader(new FileReader(csvLocation))) {
@@ -130,10 +138,20 @@ public class World {
 						objectList[numberOfObjects++] = new Pylon(x, y, map);
 					} else if (name.equals("engineer")) {
 						objectList[numberOfObjects++] = new Engineer(x, y, map);
+					} else if (name.contentEquals("scout")) {
+						objectList[numberOfObjects++] = new Scout(x, y, map);
 					}
 				}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Input getInput() {
+		return lastInput;
+	}
+	
+	public int getDelta() {
+		return lastDelta;
 	}
 }

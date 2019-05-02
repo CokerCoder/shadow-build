@@ -12,7 +12,9 @@ public abstract class Objects {
 	private Image image;
 	private Vector2f pos;
 	
-	public abstract void update(int delta, Vector2f dest);
+	private Vector2f target;
+	
+	public abstract void update(World world);
 	
 	public abstract void render(Graphics g);
 	
@@ -40,5 +42,13 @@ public abstract class Objects {
 
 	public void setMap(TiledMap map) {
 		this.map = map;
+	}
+
+	public Vector2f getTarget() {
+		return target;
+	}
+
+	public void setTarget(Vector2f target) {
+		this.target = target;
 	}
 }
