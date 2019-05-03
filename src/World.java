@@ -61,12 +61,15 @@ public class World {
 			
 			if(isAnythingSelected) {
 				if(objectList[selectedIndex] instanceof Units) {
-					objectList[selectedIndex].setTarget(destPos);
+					// Polymorphism
+					Units a = (Units)objectList[selectedIndex];
+					a.setTarget(destPos);
 				}
 			}
 
 		} else if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-
+			
+			boolean isNewPosSelected = false;
 			// Calculate the left button position respect to the world
 			selectPos.x = camera.calcWorldX(input.getMouseX());
 			selectPos.y = camera.calcWorldY(input.getMouseY());
@@ -75,31 +78,38 @@ public class World {
 				if((objectList[i].getPos().distance(selectPos)<=App.SELECT_DISTANCE)) {
 					// Select a unit
 					if(objectList[i] instanceof Units) {
-						System.out.println("A unit is selected!");
 						isAnythingSelected = true;
 						selectedIndex = i;
+						isNewPosSelected = true;
 						// Break if there is a unit within the mouse since we want a unit instead of a building if they appear both
 						break;
 					}
 					else if(objectList[i] instanceof Buildings) {
-						System.out.println("A building is selected!");
 						isAnythingSelected = true;
 						selectedIndex = i;
+						isNewPosSelected = true;
 					}
 				}
+			}	
+			if(!isNewPosSelected) {
+				isAnythingSelected = false;
 			}
-
 		}
 		for(int i=0;i<numberOfObjects;i++) {
 			objectList[i].update(this);
 		}
+		
 	}
 	
 	public void render(Graphics g) {
-		// Firstly translate the camera based on the unit selected
+		
+		// Firstly translate the camera based on the unit or building selected
 		if(isAnythingSelected && (!(objectList[selectedIndex] instanceof Resources))) {
-			camera.translate(g, objectList[selectedIndex]);
+			camera.translate(g, objectList[selectedIndex].getPos().x, objectList[selectedIndex].getPos().y);
+		} else if(!isAnythingSelected) {
+			camera.translate(g, camera.getLastTransPos().x, camera.getLastTransPos().y);
 		}
+		
 		// Display the map onto the screen
 		map.render(0, 0);
 		

@@ -1,5 +1,6 @@
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 
 /**
@@ -12,6 +13,8 @@ public class Camera {
 	private float transX, transY;
 	// Size of the map used to check if out of bound
 	private float mapWidth, mapHeight;
+	
+	private Vector2f lastTransPos;
    
 	// Camera position in a World coordinates
 	// Define a rectangle with the size of our window, this represents our camera "range"
@@ -29,10 +32,12 @@ public class Camera {
       
 		this.mapWidth = mapWidth;
 		this.mapHeight = mapHeight;
+		
+		this.lastTransPos = new Vector2f(0, 0);
 	}
 	
 	// Calculate the movement along the x and y axis
-	public void translate (Graphics g, Objects unit) {
+	public void translate (Graphics g, float x, float y) {
 		
 		/* The number 16 means the number of pixels of the map
 		 * that we need to let the render method to render this much more
@@ -42,28 +47,30 @@ public class Camera {
 		 */
 		
 		// If the player is at left edge of the map, keep the camera at left so the player cannot go across the boundry
-		if(unit.getPos().x-App.WINDOW_WIDTH/2+16 < 0)
+		if(x-App.WINDOW_WIDTH/2+16 < 0)
 			transX = 0;
 		// ...right edge
-		else if(unit.getPos().x+App.WINDOW_WIDTH/2+16 > mapWidth)
+		else if(x+App.WINDOW_WIDTH/2+16 > mapWidth)
 			transX = -mapWidth+App.WINDOW_WIDTH;
 		// Otherwise update the movement
 		else
-			transX = -unit.getPos().x+App.WINDOW_WIDTH/2-16;
+			transX = -x+App.WINDOW_WIDTH/2-16;
 		
 		// Vise versa
-		if(unit.getPos().y-App.WINDOW_HEIGHT/2+16 < 0)
+		if(y-App.WINDOW_HEIGHT/2+16 < 0)
 			transY = 0;
-		else if(unit.getPos().y+App.WINDOW_HEIGHT/2+16 > mapHeight)
+		else if(y+App.WINDOW_HEIGHT/2+16 > mapHeight)
 			transY = -mapHeight+App.WINDOW_HEIGHT;
 		else
-			transY = -unit.getPos().y+App.WINDOW_HEIGHT/2-16;
+			transY = -y+App.WINDOW_HEIGHT/2-16;
+		
+		
+		setLastTransPos(new Vector2f(x, y));
 		
 		// Apply the transformation and update the camera location
 		g.translate(transX, transY);
 		viewPort.setX(-transX);
 		viewPort.setY(-transY);
-		
 	}
 	
 	// Hepler method to calculate a point position in a World perpective (the total map)
@@ -73,5 +80,13 @@ public class Camera {
 	}
 	public float calcWorldY(float cameraY) {
 		return cameraY+viewPort.getY();
+	}
+
+	public Vector2f getLastTransPos() {
+		return lastTransPos;
+	}
+
+	public void setLastTransPos(Vector2f lastTransPos) {
+		this.lastTransPos = lastTransPos;
 	}
 }

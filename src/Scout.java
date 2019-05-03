@@ -18,6 +18,6 @@ public class Scout extends Units {
 	@Override
 	public void update(World world) {
 		// A scout could only move around
-		super.move(world.getDelta(), super.getTarget());
+		super.update(world);
 	}
 }

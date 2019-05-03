@@ -12,15 +12,12 @@ public abstract class Objects {
 	private Image image;
 	private Vector2f pos;
 	
-	private Vector2f target;
-	
 	public abstract void update(World world);
 	
 	public void render(Graphics g) {
 		image.drawCentered(pos.x, pos.y);
 	}
-	
-	
+
 	// Getters and setters
 	public Vector2f getPos() {
 		return pos;
@@ -46,11 +43,4 @@ public abstract class Objects {
 		this.map = map;
 	}
 
-	public Vector2f getTarget() {
-		return target;
-	}
-
-	public void setTarget(Vector2f target) {
-		this.target = target;
-	}
 }
