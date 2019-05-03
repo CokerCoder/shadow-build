@@ -66,9 +66,7 @@ public class World {
 			}
 
 		} else if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			
-			boolean ifNewPosIsEmpty = true;
-			
+
 			// Calculate the left button position respect to the world
 			selectPos.x = camera.calcWorldX(input.getMouseX());
 			selectPos.y = camera.calcWorldY(input.getMouseY());
@@ -77,24 +75,20 @@ public class World {
 				if((objectList[i].getPos().distance(selectPos)<=App.SELECT_DISTANCE)) {
 					// Select a unit
 					if(objectList[i] instanceof Units) {
+						System.out.println("A unit is selected!");
 						isAnythingSelected = true;
 						selectedIndex = i;
-						ifNewPosIsEmpty = false;
+						// Break if there is a unit within the mouse since we want a unit instead of a building if they appear both
 						break;
-						
 					}
 					else if(objectList[i] instanceof Buildings) {
+						System.out.println("A building is selected!");
 						isAnythingSelected = true;
 						selectedIndex = i;
-						ifNewPosIsEmpty = false;
 					}
 				}
 			}
-			if(ifNewPosIsEmpty==true) {
-				// If nothing to be selected in the new mouse position, discard the selection
-				isAnythingSelected = false;
-				selectedIndex = -1;
-			}
+
 		}
 		for(int i=0;i<numberOfObjects;i++) {
 			objectList[i].update(this);
@@ -103,7 +97,7 @@ public class World {
 	
 	public void render(Graphics g) {
 		// Firstly translate the camera based on the unit selected
-		if(isAnythingSelected && objectList[selectedIndex] instanceof Units) {
+		if(isAnythingSelected && (!(objectList[selectedIndex] instanceof Resources))) {
 			camera.translate(g, objectList[selectedIndex]);
 		}
 		// Display the map onto the screen

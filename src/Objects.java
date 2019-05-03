@@ -16,7 +16,9 @@ public abstract class Objects {
 	
 	public abstract void update(World world);
 	
-	public abstract void render(Graphics g);
+	public void render(Graphics g) {
+		image.drawCentered(pos.x, pos.y);
+	}
 	
 	
 	// Getters and setters
