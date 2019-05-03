@@ -7,8 +7,8 @@ public class Pylon extends Buildings{
 	
 	public static final String imageLocation = "assets/buildings/pylon.png";
 	
-	public Pylon(float x, float y, TiledMap map) throws SlickException {
-		super(x, y, map);
+	public Pylon(float x, float y) throws SlickException {
+		super(x, y);
 		super.setImage(new Image(imageLocation));
 	}
 

@@ -1,5 +1,6 @@
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -11,6 +12,11 @@ public abstract class Objects {
 	private TiledMap map;
 	private Image image;
 	private Vector2f pos;
+	
+	public Objects(float x, float y) throws SlickException {
+		pos = new Vector2f(x, y);
+		map = new TiledMap(World.mapLocation);
+	}
 	
 	public abstract void update(World world);
 	

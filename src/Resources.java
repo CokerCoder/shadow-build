@@ -1,4 +1,5 @@
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -6,9 +7,8 @@ public abstract class Resources extends Objects {
 	
 	private int amount;
 	
-	public Resources(float x, float y, TiledMap map) {
-		super.setPos(new Vector2f(x, y));
-		super.setMap(map);
+	public Resources(float x, float y) throws SlickException {
+		super(x, y);
 	}
 	
 	public void render(Graphics g) {

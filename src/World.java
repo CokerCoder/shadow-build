@@ -133,17 +133,17 @@ public class World {
 					int y = Integer.parseInt(cells[2]);
 					
 					if(name.equals("command_centre")) {
-						objectList[numberOfObjects++] = new Commandcentre(x, y, map);
+						objectList[numberOfObjects++] = new Commandcentre(x, y);
 					} else if (name.equals("metal_mine")) {
-						objectList[numberOfObjects++] = new Metal(x, y, map);
+						objectList[numberOfObjects++] = new Metal(x, y);
 					} else if (name.equals("unobtainium_mine")) {
-						objectList[numberOfObjects++] = new Unobtainium(x, y, map);
+						objectList[numberOfObjects++] = new Unobtainium(x, y);
 					} else if (name.equals("pylon")) {
-						objectList[numberOfObjects++] = new Pylon(x, y, map);
+						objectList[numberOfObjects++] = new Pylon(x, y);
 					} else if (name.equals("engineer")) {
-						objectList[numberOfObjects++] = new Engineer(x, y, map);
+						objectList[numberOfObjects++] = new Engineer(x, y);
 					} else if (name.contentEquals("scout")) {
-						objectList[numberOfObjects++] = new Scout(x, y, map);
+						objectList[numberOfObjects++] = new Scout(x, y);
 					}
 				}
 		} catch (IOException e) {

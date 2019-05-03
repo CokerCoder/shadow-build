@@ -1,3 +1,4 @@
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -8,9 +9,8 @@ public abstract class Units extends Objects{
 	private float speed;
 	private Vector2f target;
 	
-	public Units(float x, float y, TiledMap map) {
-		super.setPos(new Vector2f(x, y));
-		super.setMap(map);
+	public Units(float x, float y) throws SlickException {
+		super(x, y);
 		// At the start, the unit are not moving
 		target = super.getPos();
 	}

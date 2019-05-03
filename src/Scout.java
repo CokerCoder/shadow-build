@@ -8,8 +8,8 @@ public class Scout extends Units {
 	public static final String imageLocation = "assets/units/scout.png";
 	public static final float SCOUT_SPEED = 0.3f;
 	
-	public Scout(float x, float y, TiledMap map) throws SlickException {
-		super(x, y, map);
+	public Scout(float x, float y) throws SlickException {
+		super(x, y);
 		super.setImage(new Image(imageLocation));
 		super.setSpeed(SCOUT_SPEED);
 	}

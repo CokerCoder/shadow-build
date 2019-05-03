@@ -9,8 +9,8 @@ public class Unobtainium extends Resources{
 	
 	public static final int initialAmount = 50;
 	
-	public Unobtainium(float x, float y, TiledMap map) throws SlickException {
-		super(x, y, map);
+	public Unobtainium(float x, float y) throws SlickException {
+		super(x, y);
 		super.setImage(new Image(imageLocation));
 		super.setAmount(initialAmount);
 	}
