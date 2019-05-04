@@ -1,7 +1,5 @@
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.tiled.TiledMap;
 
 public class Unobtainium extends Resources{
 	
@@ -17,8 +15,7 @@ public class Unobtainium extends Resources{
 
 	@Override
 	public void update(World world) {
-		// TODO Auto-generated method stub
-		
+		super.update(world);
 	}
 
 }

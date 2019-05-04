@@ -1,6 +1,5 @@
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.tiled.TiledMap;
 
 // Inherited from Unit class (scout is a unit)
 public class Scout extends Units {

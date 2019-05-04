@@ -1,6 +1,5 @@
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.tiled.TiledMap;
 
 public abstract class Units extends Objects{
 
@@ -8,6 +7,9 @@ public abstract class Units extends Objects{
 	private double angle;
 	private float speed;
 	private Vector2f target;
+	
+	private boolean isSelected = false;
+	
 	
 	public Units(float x, float y) throws SlickException {
 		super(x, y);
@@ -51,5 +53,15 @@ public abstract class Units extends Objects{
 	
 	public void resetTarget() {
 		setTarget(super.getPos());
+	}
+
+
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
 	}
 }

@@ -23,6 +23,7 @@ public class World {
 	// Set the local variables for the map, player and camera
 	private final TiledMap map;
 	private final Camera camera;
+	private final Text information;
 	
 	private Input lastInput;
 	private int lastDelta;
@@ -43,7 +44,7 @@ public class World {
 	public World() throws SlickException {
 		map = new TiledMap(mapLocation);
 		camera = new Camera(map, map.getWidth() * map.getTileWidth(), map.getHeight() * map.getTileHeight());
-		
+		information = new Text();
 		// Load the initial objects
 		loadInitialObjects(objectList);
 	}
@@ -157,5 +158,17 @@ public class World {
 	
 	public int getDelta() {
 		return lastDelta;
+	}
+
+	public void addObject(Objects newObject) {
+		objectList[numberOfObjects++] = newObject;
+	}
+	
+	public Objects[] getList() {
+		return objectList;
+	}
+	
+	public int getNumberOfObjects() {
+		return numberOfObjects;
 	}
 }
