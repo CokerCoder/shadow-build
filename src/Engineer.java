@@ -74,8 +74,7 @@ public class Engineer extends Units {
 					check.setEngineerNearby(true);
 					System.out.println("Target mine position: "+" "+targetMine.x+" "+targetMine.y);
 					
-					targetMine = objectList[i].getPos();
-						
+					targetMine = objectList[i].getPos();	
 					targetMineIndex = i;
 					isMining = true;
 					return true;
