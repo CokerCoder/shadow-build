@@ -22,6 +22,9 @@ public class App extends BasicGame {
     /** window height, in pixels */
     public static final int WINDOW_HEIGHT = 768;
 
+	public static final float MIN_DISTANCE = 0.25f;
+	public static final int SELECT_DISTANCE = 35;
+	
     private World world;
 
     public App() {
@@ -29,8 +32,7 @@ public class App extends BasicGame {
     }
 
     @Override
-    public void init(GameContainer gc)
-            throws SlickException {
+    public void init(GameContainer gc) throws SlickException {
         world = new World();
     }
 

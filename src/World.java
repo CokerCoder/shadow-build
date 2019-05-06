@@ -1,71 +1,174 @@
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 
-/**
- * This class should be used to contain all the different objects in your game world, and schedule their interactions.
- * 
- * You are free to make ANY modifications you see fit.
- * These classes are provided simply as a starting point. You are not strictly required to use them.
- */
+/* This class contains all the objects in the game */
 
 public class World {
+	// We set the maximum objects in this world is 50
+	public static final int maximumObjects = 50;
 	
-	// Constants
-	public static final int LAYER_INDEX = 0;
-	public static final float MIN_DISTANCE = 0.25f;
+	public static final String mapLocation = "assets/main.tmx";
+	public static final String csvLocation = "assets/objects.csv";
 	
-	public static final float PLAYER_SPEED = 0.25f;
+	public static final String SOLID_PROPERTY = "solid";
+	public static final String OCCUPIED_PROPERTY = "occupied";
 	
 	// Set the local variables for the map, player and camera
 	private final TiledMap map;
-	private final Sprite player;
 	private final Camera camera;
+	private final Text information;
 	
-	// Size of the map in pixels
-	private int mapWidth, mapHeight;
+	private Input lastInput;
+	private int lastDelta;
 	
-	// Get the destination position and store it into a vector
-	private Vector2f dest = new Vector2f(0, 0);
+	// Create a list contains all the objects in the world
+	private Objects[] objectList = new Objects[maximumObjects];
+	// Keep track the number of the objects
+	private int numberOfObjects = 0;
+	
+	// The position the player choose, update when left-click anywhere
+	private Vector2f selectPos = new Vector2f(0, 0);
 
+	
+	boolean isAnythingSelected = false;
+	int selectedIndex = -1;
 
 	// Construct the World
 	public World() throws SlickException {
-		map = new TiledMap("assets/main.tmx");
-		mapWidth = map.getWidth() * map.getTileWidth();
-		mapHeight = map.getHeight() * map.getTileHeight();
-		
-		// Initialise the player at the same position as the destination position
-		// with a speed of 0.25
-		player = new Player(dest.x, dest.y, map, new Image("assets/scout.png"), PLAYER_SPEED);
-		// Initialise the camera
-		camera = new Camera(map, mapWidth, mapHeight);
+		map = new TiledMap(mapLocation);
+		camera = new Camera(map, map.getWidth() * map.getTileWidth(), map.getHeight() * map.getTileHeight());
+		information = new Text();
+		// Load the initial objects
+		loadInitialObjects(objectList);
 	}
 	
 	public void update(Input input, int delta) {
+		lastInput = input;
+		lastDelta = delta;
+		
+		// Read the mouse
 		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
-			// Calculate the mouse position respect to the world using the function in the Camera class
-			dest.x = camera.calcWorldX(input.getMouseX());
-			dest.y = camera.calcWorldY(input.getMouseY());
+			// Calculate the right button position respect to the world using the function in the Camera class
+			Vector2f destPos = new Vector2f(0, 0);
+			destPos.x = camera.calcWorldX(input.getMouseX());
+			destPos.y = camera.calcWorldY(input.getMouseY());
+			
+			if(isAnythingSelected) {
+				if(objectList[selectedIndex] instanceof Units) {
+					// Polymorphism
+					Units a = (Units)objectList[selectedIndex];
+					a.setTarget(destPos);
+				}
+			}
+
+		} else if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+			
+			boolean isNewPosSelected = false;
+			// Calculate the left button position respect to the world
+			selectPos.x = camera.calcWorldX(input.getMouseX());
+			selectPos.y = camera.calcWorldY(input.getMouseY());
+			
+			for(int i=0;i<numberOfObjects;i++) {
+				if((objectList[i].getPos().distance(selectPos)<=App.SELECT_DISTANCE)) {
+					// Select a unit
+					if(objectList[i] instanceof Units) {
+						isAnythingSelected = true;
+						selectedIndex = i;
+						isNewPosSelected = true;
+						// Break if there is a unit within the mouse since we want a unit instead of a building if they appear both
+						break;
+					}
+					else if(objectList[i] instanceof Buildings) {
+						isAnythingSelected = true;
+						selectedIndex = i;
+						isNewPosSelected = true;
+					}
+				}
+			}	
+			if(!isNewPosSelected) {
+				isAnythingSelected = false;
+			}
 		}
-		// Update the player's position
-		player.update(delta, dest);
+		for(int i=0;i<numberOfObjects;i++) {
+			objectList[i].update(this);
+		}
+		
 	}
 	
 	public void render(Graphics g) {
-		// Firstly translate the camera based on the player's position
-		camera.translate(g, player);
+		
+		// Firstly translate the camera based on the unit or building selected
+		if(isAnythingSelected && (!(objectList[selectedIndex] instanceof Resources))) {
+			camera.translate(g, objectList[selectedIndex].getPos().x, objectList[selectedIndex].getPos().y);
+		} else if(!isAnythingSelected) {
+			camera.translate(g, camera.getLastTransPos().x, camera.getLastTransPos().y);
+		}
+		
 		// Display the map onto the screen
 		map.render(0, 0);
-		player.render(g);
+		
+		// Loop to render all the objects
+		for(int i=0;i<numberOfObjects;i++) {
+			objectList[i].render(g);
+		}
 	}
 	
+	public void loadInitialObjects(Objects[] objectList) throws SlickException {
 
-	// Helper method to calculate the angle that between two points
-	public static double getAngle(float x1, float y1, float x2, float y2) {
-		return (Math.atan2(y2-y1, x2-x1));
+		// Read CSV
+		try (BufferedReader br =
+				new BufferedReader(new FileReader(csvLocation))) {
+				String text;
+				while ((text = br.readLine()) != null) {
+					
+					String cells[] = text.split(",");
+					String name = cells[0];
+					int x = Integer.parseInt(cells[1]);
+					int y = Integer.parseInt(cells[2]);
+					
+					if(name.equals("command_centre")) {
+						objectList[numberOfObjects++] = new Commandcentre(x, y);
+					} else if (name.equals("metal_mine")) {
+						objectList[numberOfObjects++] = new Metal(x, y);
+					} else if (name.equals("unobtainium_mine")) {
+						objectList[numberOfObjects++] = new Unobtainium(x, y);
+					} else if (name.equals("pylon")) {
+						objectList[numberOfObjects++] = new Pylon(x, y);
+					} else if (name.equals("engineer")) {
+						objectList[numberOfObjects++] = new Engineer(x, y);
+					} else if (name.contentEquals("scout")) {
+						objectList[numberOfObjects++] = new Scout(x, y);
+					}
+				}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public Input getInput() {
+		return lastInput;
+	}
+	
+	public int getDelta() {
+		return lastDelta;
+	}
+
+	public void addObject(Objects newObject) {
+		objectList[numberOfObjects++] = newObject;
+	}
+	
+	public Objects[] getList() {
+		return objectList;
+	}
+	
+	public int getNumberOfObjects() {
+		return numberOfObjects;
 	}
 }
