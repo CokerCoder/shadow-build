@@ -1,6 +1,7 @@
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -23,15 +24,12 @@ public class World {
 	// Set the local variables for the map, player and camera
 	private final TiledMap map;
 	private final Camera camera;
-	private final Text information;
 	
 	private Input lastInput;
 	private int lastDelta;
 	
-	// Create a list contains all the objects in the world
-	private Objects[] objectList = new Objects[maximumObjects];
-	// Keep track the number of the objects
-	private int numberOfObjects = 0;
+	// ArrayList of type Objects contains all the objects in this game
+	private ArrayList<Objects> objectsList = new ArrayList<Objects>();
 	
 	// The position the player choose, update when left-click anywhere
 	private Vector2f selectPos = new Vector2f(0, 0);
@@ -44,9 +42,8 @@ public class World {
 	public World() throws SlickException {
 		map = new TiledMap(mapLocation);
 		camera = new Camera(map, map.getWidth() * map.getTileWidth(), map.getHeight() * map.getTileHeight());
-		information = new Text();
 		// Load the initial objects
-		loadInitialObjects(objectList);
+		loadInitialObjects(objectsList);
 	}
 	
 	public void update(Input input, int delta) {
@@ -61,9 +58,9 @@ public class World {
 			destPos.y = camera.calcWorldY(input.getMouseY());
 			
 			if(isAnythingSelected) {
-				if(objectList[selectedIndex] instanceof Units) {
+				if(objectsList.get(selectedIndex) instanceof Units) {
 					// Polymorphism
-					Units a = (Units)objectList[selectedIndex];
+					Units a = (Units)objectsList.get(selectedIndex);
 					a.setTarget(destPos);
 				}
 			}
@@ -75,29 +72,35 @@ public class World {
 			selectPos.x = camera.calcWorldX(input.getMouseX());
 			selectPos.y = camera.calcWorldY(input.getMouseY());
 			
-			for(int i=0;i<numberOfObjects;i++) {
-				if((objectList[i].getPos().distance(selectPos)<=App.SELECT_DISTANCE)) {
+			for(int i=0;i<objectsList.size();i++) {
+				if((objectsList.get(i).getPos().distance(selectPos)<=App.SELECT_DISTANCE)) {
 					// Select a unit
-					if(objectList[i] instanceof Units) {
+					if(objectsList.get(i) instanceof Units) {
+						objectsList.get(i).setSelected(true);
+						
 						isAnythingSelected = true;
+					
 						selectedIndex = i;
 						isNewPosSelected = true;
 						// Break if there is a unit within the mouse since we want a unit instead of a building if they appear both
 						break;
 					}
-					else if(objectList[i] instanceof Buildings) {
+					else if(objectsList.get(i) instanceof Buildings) {
+						objectsList.get(i).setSelected(true);
 						isAnythingSelected = true;
 						selectedIndex = i;
 						isNewPosSelected = true;
 					}
+				} else {
+					objectsList.get(i).setSelected(false);
 				}
 			}	
 			if(!isNewPosSelected) {
 				isAnythingSelected = false;
 			}
 		}
-		for(int i=0;i<numberOfObjects;i++) {
-			objectList[i].update(this);
+		for(int i=0;i<objectsList.size();i++) {
+			objectsList.get(i).update(this);
 		}
 		
 	}
@@ -105,8 +108,8 @@ public class World {
 	public void render(Graphics g) {
 		
 		// Firstly translate the camera based on the unit or building selected
-		if(isAnythingSelected && (!(objectList[selectedIndex] instanceof Resources))) {
-			camera.translate(g, objectList[selectedIndex].getPos().x, objectList[selectedIndex].getPos().y);
+		if(isAnythingSelected && (!(objectsList.get(selectedIndex) instanceof Resources))) {
+			camera.translate(g, objectsList.get(selectedIndex).getPos().x, objectsList.get(selectedIndex).getPos().y);
 		} else if(!isAnythingSelected) {
 			camera.translate(g, camera.getLastTransPos().x, camera.getLastTransPos().y);
 		}
@@ -115,12 +118,12 @@ public class World {
 		map.render(0, 0);
 		
 		// Loop to render all the objects
-		for(int i=0;i<numberOfObjects;i++) {
-			objectList[i].render(g);
+		for(int i=0;i<objectsList.size();i++) {
+			objectsList.get(i).render();
 		}
 	}
 	
-	public void loadInitialObjects(Objects[] objectList) throws SlickException {
+	public void loadInitialObjects(ArrayList<Objects> list) throws SlickException {
 
 		// Read CSV
 		try (BufferedReader br =
@@ -134,17 +137,17 @@ public class World {
 					int y = Integer.parseInt(cells[2]);
 					
 					if(name.equals("command_centre")) {
-						objectList[numberOfObjects++] = new Commandcentre(x, y);
+						list.add(new Commandcentre(x, y));
 					} else if (name.equals("metal_mine")) {
-						objectList[numberOfObjects++] = new Metal(x, y);
+						list.add(new Metal(x, y));
 					} else if (name.equals("unobtainium_mine")) {
-						objectList[numberOfObjects++] = new Unobtainium(x, y);
+						list.add(new Unobtainium(x, y));
 					} else if (name.equals("pylon")) {
-						objectList[numberOfObjects++] = new Pylon(x, y);
+						list.add(new Pylon(x, y));
 					} else if (name.equals("engineer")) {
-						objectList[numberOfObjects++] = new Engineer(x, y);
+						list.add(new Engineer(x, y));
 					} else if (name.contentEquals("scout")) {
-						objectList[numberOfObjects++] = new Scout(x, y);
+						list.add(new Scout(x, y));
 					}
 				}
 		} catch (IOException e) {
@@ -160,15 +163,8 @@ public class World {
 		return lastDelta;
 	}
 
-	public void addObject(Objects newObject) {
-		objectList[numberOfObjects++] = newObject;
+	public ArrayList<Objects> getList() {
+		return objectsList;
 	}
-	
-	public Objects[] getList() {
-		return objectList;
-	}
-	
-	public int getNumberOfObjects() {
-		return numberOfObjects;
-	}
+
 }

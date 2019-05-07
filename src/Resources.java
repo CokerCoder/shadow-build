@@ -4,8 +4,6 @@ import org.newdawn.slick.SlickException;
 public abstract class Resources extends Objects {
 	
 	private int amount;
-	private boolean isEngineerNearby = false;
-	private int nearbyTime=0;
 	
 	public static final int CARRY_AMOUNT = 2;
 	
@@ -14,18 +12,12 @@ public abstract class Resources extends Objects {
 	}
 	
 	public void update(World world) {
-		if(!isEngineerNearby) {
-			resetTime();
-		} else {
-			nearbyTime += world.getDelta();
-		}
-		System.out.println("Time elapsed: "+nearbyTime);
-		System.out.println("Engineer nearby:"+ " "+isEngineerNearby);
+
 	}
 	
 	
 	
-	public void render(Graphics g) {
+	public void render() {
 		if(amount>0) {
 			super.getImage().drawCentered(super.getPos().x, super.getPos().y);
 		}
@@ -40,16 +32,4 @@ public abstract class Resources extends Objects {
 		this.amount = amount;
 	}
 
-	public boolean isEngineerNearby() {
-		return isEngineerNearby;
-	}
-
-	public void setEngineerNearby(boolean isEngineerNearby) {
-		this.isEngineerNearby = isEngineerNearby;
-	}
-	
-	public void resetTime() {
-		this.nearbyTime = 0;
-	}
-	
 }
