@@ -1,14 +1,16 @@
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Units extends Objects{
-
+	
+	public static final String HIGHLIGHT_IMAGE = "assets/highlight.png";
+	
 	// Every unit can move based on an angle and a speed
 	private double angle;
 	private float speed;
 	private Vector2f target;
-	
-	private boolean isSelected = false;
+	private Image highlight = new Image(HIGHLIGHT_IMAGE);
 	
 	
 	public Units(float x, float y) throws SlickException {
@@ -29,6 +31,15 @@ public abstract class Units extends Objects{
 		// Check if the next position is solid, if not then update the current position
 		if(getPos().distance(target)>App.MIN_DISTANCE && isPositionFree(nextPos)==true) {
 			setPos(nextPos);
+		}
+	}
+	
+	public void render() {
+		if(!super.isSelected()) {
+			super.getImage().drawCentered(super.getPos().x, super.getPos().y);
+		} else {
+			super.getImage().drawCentered(super.getPos().x, super.getPos().y);
+			highlight.drawCentered(super.getPos().x, super.getPos().y);
 		}
 	}
 
@@ -55,13 +66,4 @@ public abstract class Units extends Objects{
 		setTarget(super.getPos());
 	}
 
-
-	public boolean isSelected() {
-		return isSelected;
-	}
-
-
-	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
-	}
 }

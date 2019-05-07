@@ -13,6 +13,8 @@ public abstract class Objects {
 	private Image image;
 	private Vector2f pos;
 	
+	private boolean isSelected = false;
+	
 	public Objects(float x, float y) throws SlickException {
 		pos = new Vector2f(x, y);
 		map = new TiledMap(World.mapLocation);
@@ -20,9 +22,7 @@ public abstract class Objects {
 	
 	public abstract void update(World world);
 	
-	public void render(Graphics g) {
-		image.drawCentered(pos.x, pos.y);
-	}
+	public abstract void render();
 
 	// Getters and setters
 	public Vector2f getPos() {
@@ -47,6 +47,14 @@ public abstract class Objects {
 
 	public void setMap(TiledMap map) {
 		this.map = map;
+	}
+
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
 	}
 
 }

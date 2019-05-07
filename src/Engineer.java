@@ -14,6 +14,9 @@ public class Engineer extends Units {
 	private Vector2f targetMine;
 	private int targetMineIndex=0;
 	private Vector2f targetCC;
+
+	// Time spent near a resource
+	int timeNearResource;
 	
 	public Engineer(float x, float y) throws SlickException {
 		super(x, y);
@@ -25,11 +28,12 @@ public class Engineer extends Units {
 
 	@Override
 	public void update(World world) {
-		
+		isNearResource(world.getList(), world.getNumberOfObjects());
+		// If the engineer ie not working now, update it as normal
 		if(!isMining) {
 			super.update(world);
 		}
-		else if(isNearResource(world.getList(), world.getNumberOfObjects())) {
+		else if(isMining) {
 			world.getList()[targetMineIndex].update(world);
 		}
 		else if(amountCarried==Resources.CARRY_AMOUNT) {
@@ -64,27 +68,24 @@ public class Engineer extends Units {
 		return targetCC;
 	}
 	
-	public boolean isNearResource(Objects[] objectList, int numberOfObjects) {
+	public void isNearResource(Objects[] objectList, int numberOfObjects) {
 		int i;
 		for(i=0;i<numberOfObjects;i++) {
 			if(objectList[i] instanceof Resources) {
 				Resources check = (Resources)objectList[i];
 				if(super.getPos().distance(objectList[i].getPos())<=10) {
 					
-					check.setEngineerNearby(true);
 					System.out.println("Target mine position: "+" "+targetMine.x+" "+targetMine.y);
 					
 					targetMine = objectList[i].getPos();	
 					targetMineIndex = i;
 					isMining = true;
-					return true;
 				}
 				else {
-					check.setEngineerNearby(false);
 				}
 			}
 		}
-		return false;
+		isMining = false;
 	}
 	
 	public void resetAmount() {
