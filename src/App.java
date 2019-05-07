@@ -23,7 +23,7 @@ public class App extends BasicGame {
     public static final int WINDOW_HEIGHT = 768;
 
 	public static final float MIN_DISTANCE = 0.25f;
-	public static final int SELECT_DISTANCE = 35;
+	public static final int SELECT_DISTANCE = 32;
 	
     private World world;
 

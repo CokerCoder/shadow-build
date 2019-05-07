@@ -66,7 +66,8 @@ public class World {
 			}
 
 		} else if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			
+			// Reset each time click left button, there is only one object can be selected at a time
+			resetSelect(objectsList);
 			boolean isNewPosSelected = false;
 			// Calculate the left button position respect to the world
 			selectPos.x = camera.calcWorldX(input.getMouseX());
@@ -82,6 +83,8 @@ public class World {
 					
 						selectedIndex = i;
 						isNewPosSelected = true;
+						
+						
 						// Break if there is a unit within the mouse since we want a unit instead of a building if they appear both
 						break;
 					}
@@ -165,6 +168,12 @@ public class World {
 
 	public ArrayList<Objects> getList() {
 		return objectsList;
+	}
+	
+	public void resetSelect(ArrayList<Objects> list) {
+		for(int i=0;i<list.size();i++) {
+			list.get(i).setSelected(false);
+		}
 	}
 
 }

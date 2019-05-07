@@ -29,26 +29,7 @@ public class Engineer extends Units {
 
 	@Override
 	public void update(World world) {
-		isNearResource(world.getList(), world.getNumberOfObjects());
-		// If the engineer ie not working now, update it as normal
-		if(!isMining) {
-			super.update(world);
-		}
-		else if(isMining) {
-			world.getList()[targetMineIndex].update(world);
-		}
-		else if(amountCarried==Resources.CARRY_AMOUNT) {
-			super.setTarget(findNearestCC(world.getList(), world.getNumberOfObjects()));
-			super.update(world);
-		}
-		else if(isMining&&amountCarried==0) {
-			super.setTarget(targetMine);
-			super.update(world);
-		}
-		// If the engineer reach the CC, drop the resource off
-		if(super.getPos().distance(targetCC)<=App.MIN_DISTANCE) {
-			resetAmount();
-		}
+
 	}
 	
 	// Return the vector position of the nearest coomand centre
