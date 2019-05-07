@@ -22,7 +22,7 @@ public abstract class Objects {
 	
 	public abstract void update(World world);
 	
-	public abstract void render();
+	public abstract void render(Graphics g);
 
 	// Getters and setters
 	public Vector2f getPos() {

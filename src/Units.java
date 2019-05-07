@@ -1,3 +1,4 @@
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -34,7 +35,8 @@ public abstract class Units extends Objects{
 		}
 	}
 	
-	public void render() {
+	public void render(Graphics g) {
+		// If the unit isn't selected, render the normal image, otherwise render it with its highlight image
 		if(!super.isSelected()) {
 			super.getImage().drawCentered(super.getPos().x, super.getPos().y);
 		} else {

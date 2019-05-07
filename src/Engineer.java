@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -29,24 +32,25 @@ public class Engineer extends Units {
 
 	@Override
 	public void update(World world) {
-
+		super.update(world);
 	}
 	
 	// Return the vector position of the nearest coomand centre
-	public Vector2f findNearestCC(Objects[] objectList, int numberOfObjects) {
+	public Vector2f findNearestCC(ArrayList<Objects> list) {
+		// Set the current minimum distance to infinity for now
 		double distance = Double.POSITIVE_INFINITY;
 		int nearestIndex = -1;
 		int i;
-		for(i=0;i<numberOfObjects;i++) {
-			if(objectList[i] instanceof Commandcentre) {
-				double newDistance = super.getPos().distance(objectList[i].getPos());
+		for(i=0;i<list.size();i++) {
+			if(list.get(i) instanceof Commandcentre) {
+				double newDistance = super.getPos().distance(list.get(i).getPos());
 				if(newDistance<distance) {
 					distance = newDistance;
 					nearestIndex = i;
 				}
 			}
 		}
-		targetCC = objectList[nearestIndex].getPos();
+		targetCC = list.get(nearestIndex).getPos();
 		return targetCC;
 	}
 	
@@ -72,5 +76,12 @@ public class Engineer extends Units {
 	
 	public void resetAmount() {
 		this.amountCarried = 0;
+	}
+
+
+	@Override
+	public void render(Graphics g) {
+		// TODO Auto-generated method stub
+		
 	}
 }

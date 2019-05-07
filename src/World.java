@@ -37,6 +37,10 @@ public class World {
 	
 	boolean isAnythingSelected = false;
 	int selectedIndex = -1;
+	
+	// Keep track of the current amount of resource
+	private int currMetal;
+	private int currUnobtain;
 
 	// Construct the World
 	public World() throws SlickException {
@@ -44,6 +48,8 @@ public class World {
 		camera = new Camera(map, map.getWidth() * map.getTileWidth(), map.getHeight() * map.getTileHeight());
 		// Load the initial objects
 		loadInitialObjects(objectsList);
+		this.setCurrMetal(0);
+		this.setCurrUnobtain(0);
 	}
 	
 	public void update(Input input, int delta) {
@@ -122,7 +128,14 @@ public class World {
 		
 		// Loop to render all the objects
 		for(int i=0;i<objectsList.size();i++) {
-			objectsList.get(i).render();
+			objectsList.get(i).render(g);
+		}
+		
+		// Display the text at (32, 32)
+		g.drawString("Metal:  "+this.currMetal+"\nUnobtainium:  "+this.currUnobtain, camera.calcWorldX(32), camera.calcWorldY(32));
+		
+		if(isAnythingSelected && objectsList.get(selectedIndex) instanceof Commandcentre) {
+			g.drawString("1- Create Scout\n2- Create Builder\n3- Create Engineer\n", camera.calcWorldX(32), camera.calcWorldY(100));
 		}
 	}
 	
@@ -174,6 +187,22 @@ public class World {
 		for(int i=0;i<list.size();i++) {
 			list.get(i).setSelected(false);
 		}
+	}
+
+	public int getCurrMetal() {
+		return currMetal;
+	}
+
+	public void setCurrMetal(int currMetal) {
+		this.currMetal = currMetal;
+	}
+
+	public int getCurrUnobtain() {
+		return currUnobtain;
+	}
+
+	public void setCurrUnobtain(int currUnobtain) {
+		this.currUnobtain = currUnobtain;
 	}
 
 }
