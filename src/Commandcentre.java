@@ -1,4 +1,5 @@
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 public class Commandcentre extends Buildings {
@@ -16,6 +17,13 @@ public class Commandcentre extends Buildings {
 	@Override
 	public void update(World world) {
 		
-
+		if(world.getInput().isKeyPressed(Input.KEY_1)&&super.isSelected()) {
+			System.out.println("You pressed 1!");
+		}
+		else if(world.getInput().isKeyPressed(Input.KEY_2)&&super.isSelected()) {
+			System.out.println("You pressed 2!");
+		}
+		
+		
 	}
 }

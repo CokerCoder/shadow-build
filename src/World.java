@@ -33,13 +33,14 @@ public class World {
 	// The position the player choose, update when left-click anywhere
 	private Vector2f selectPos = new Vector2f(0, 0);
 	
-	
+	// Keep track of the current amount of resources thr player hold
 	private int currMetal;
 	private int currUnobtain;
 
 	
 	boolean isAnythingSelected = false;
 	int selectedIndex = -1;
+	
 	// Construct the World
 	public World() throws SlickException {
 		map = new TiledMap(mapLocation);
