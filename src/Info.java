@@ -1,0 +1,42 @@
+import java.util.ArrayList;
+
+import org.newdawn.slick.Graphics;
+
+// Class contains all the information needed to be display on the screen
+public class Info {
+	
+	public static final int DRAW_STRING_A = 32;
+	public static final int DRAW_STRING_B = 100;
+	
+	private int currMetal;
+	private int currUnobtain;
+	
+	public Info() {
+		this.currMetal = 0;
+		this.currUnobtain = 0;
+	}
+	
+	public void renderInfo(Graphics g, ArrayList<Objects> list, Camera camera) {
+		
+		
+		g.drawString("Metal:  "+this.currMetal+"\nUnobtainium:  "+this.currUnobtain, camera.calcWorldX(DRAW_STRING_A), camera.calcWorldY(DRAW_STRING_A));
+		
+		for(int i=0;i<list.size();i++) {
+			
+			Objects currObject = list.get(i);
+		
+			if(currObject.isSelected()) {
+				if(currObject instanceof Builder) {
+					g.drawString("1- Build Factory\n", camera.calcWorldX(DRAW_STRING_A), camera.calcWorldY(DRAW_STRING_B));
+				}
+				else if(currObject instanceof Commandcentre) {
+					g.drawString("1- Create Scout\n2- Create Builder\n3- Create Engineer\n", camera.calcWorldX(DRAW_STRING_A), camera.calcWorldY(DRAW_STRING_B));
+				}
+				else if(currObject instanceof Factory) {
+					g.drawString("1- Train Truck\n", camera.calcWorldX(DRAW_STRING_A), camera.calcWorldY(DRAW_STRING_B));
+				}
+			}
+		}
+		
+	}
+}

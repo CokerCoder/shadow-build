@@ -22,8 +22,8 @@ public class Pylon extends Buildings{
 		
 	}
 	
-	public void render(Graphics g) {
-		super.render(g);
+	public void render() {
+		super.render();
 		if(isActived) {
 			activedImage.drawCentered(super.getPos().x, super.getPos().y);
 		}

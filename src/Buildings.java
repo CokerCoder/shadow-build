@@ -12,7 +12,7 @@ public abstract class Buildings extends Objects {
 		super(x, y);
 	}
 	
-	public void render(Graphics g) {
+	public void render() {
 		if(super.isSelected()&&(!(this instanceof Pylon))) {
 			super.getImage().drawCentered(super.getPos().x, super.getPos().y);
 			highlight.drawCentered(super.getPos().x, super.getPos().y);

@@ -35,7 +35,7 @@ public abstract class Units extends Objects{
 		}
 	}
 	
-	public void render(Graphics g) {
+	public void render() {
 		// If the unit isn't selected, render the normal image, otherwise render it with its highlight image
 		if(!super.isSelected()) {
 			super.getImage().drawCentered(super.getPos().x, super.getPos().y);

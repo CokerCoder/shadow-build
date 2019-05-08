@@ -17,7 +17,7 @@ public abstract class Resources extends Objects {
 	
 	
 	
-	public void render(Graphics g) {
+	public void render() {
 		if(amount>0) {
 			super.getImage().drawCentered(super.getPos().x, super.getPos().y);
 		}

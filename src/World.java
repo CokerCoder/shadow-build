@@ -12,8 +12,6 @@ import org.newdawn.slick.tiled.TiledMap;
 /* This class contains all the objects in the game */
 
 public class World {
-	// We set the maximum objects in this world is 50
-	public static final int maximumObjects = 50;
 	
 	public static final String mapLocation = "assets/main.tmx";
 	public static final String csvLocation = "assets/objects.csv";
@@ -24,10 +22,11 @@ public class World {
 	// Set the local variables for the map, player and camera
 	private final TiledMap map;
 	private final Camera camera;
+	private final Info info;
 	
 	private Input lastInput;
 	private int lastDelta;
-	
+
 	// ArrayList of type Objects contains all the objects in this game
 	private ArrayList<Objects> objectsList = new ArrayList<Objects>();
 	
@@ -37,19 +36,13 @@ public class World {
 	
 	boolean isAnythingSelected = false;
 	int selectedIndex = -1;
-	
-	// Keep track of the current amount of resource
-	private int currMetal;
-	private int currUnobtain;
-
 	// Construct the World
 	public World() throws SlickException {
 		map = new TiledMap(mapLocation);
 		camera = new Camera(map, map.getWidth() * map.getTileWidth(), map.getHeight() * map.getTileHeight());
+		info = new Info();
 		// Load the initial objects
 		loadInitialObjects(objectsList);
-		this.setCurrMetal(0);
-		this.setCurrUnobtain(0);
 	}
 	
 	public void update(Input input, int delta) {
@@ -128,15 +121,12 @@ public class World {
 		
 		// Loop to render all the objects
 		for(int i=0;i<objectsList.size();i++) {
-			objectsList.get(i).render(g);
+			objectsList.get(i).render();
 		}
 		
-		// Display the text at (32, 32)
-		g.drawString("Metal:  "+this.currMetal+"\nUnobtainium:  "+this.currUnobtain, camera.calcWorldX(32), camera.calcWorldY(32));
+		// Render the info after the objects to make the info stay on top of the obejcts
+		info.renderInfo(g, objectsList, camera);
 		
-		if(isAnythingSelected && objectsList.get(selectedIndex) instanceof Commandcentre) {
-			g.drawString("1- Create Scout\n2- Create Builder\n3- Create Engineer\n", camera.calcWorldX(32), camera.calcWorldY(100));
-		}
 	}
 	
 	public void loadInitialObjects(ArrayList<Objects> list) throws SlickException {
@@ -189,20 +179,5 @@ public class World {
 		}
 	}
 
-	public int getCurrMetal() {
-		return currMetal;
-	}
-
-	public void setCurrMetal(int currMetal) {
-		this.currMetal = currMetal;
-	}
-
-	public int getCurrUnobtain() {
-		return currUnobtain;
-	}
-
-	public void setCurrUnobtain(int currUnobtain) {
-		this.currUnobtain = currUnobtain;
-	}
 
 }

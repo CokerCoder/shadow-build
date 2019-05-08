@@ -79,9 +79,5 @@ public class Engineer extends Units {
 	}
 
 
-	@Override
-	public void render(Graphics g) {
-		// TODO Auto-generated method stub
-		
-	}
+
 }
