@@ -1,4 +1,5 @@
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -21,6 +22,17 @@ public abstract class Units extends Objects{
 	
 
 	public void update(World world) {
+		
+		if(super.isSelected()&&world.getInput().isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
+			
+			// Calculate the right button position respect to the world using the function in the Camera class
+			Vector2f destPos = new Vector2f(world.getCamera().calcWorldX(world.getInput().getMouseX()), world.getCamera().calcWorldY(world.getInput().getMouseY()));
+			
+			setTarget(destPos);
+		}
+		
+		
+		// Move the unit to its target position
 		// Set the angle to the destination for this unit
 		angle = Math.atan2(target.y-super.getPos().y, target.x-super.getPos().x);
 		

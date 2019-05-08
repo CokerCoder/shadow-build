@@ -37,7 +37,7 @@ public class World {
 	private int currMetal;
 	private int currUnobtain;
 
-	
+	// Keep track of the current selected object
 	boolean isAnythingSelected = false;
 	int selectedIndex = -1;
 	
@@ -55,21 +55,7 @@ public class World {
 		lastDelta = delta;
 		
 		// Read the mouse
-		if(input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
-			// Calculate the right button position respect to the world using the function in the Camera class
-			Vector2f destPos = new Vector2f(0, 0);
-			destPos.x = camera.calcWorldX(input.getMouseX());
-			destPos.y = camera.calcWorldY(input.getMouseY());
-			
-			if(isAnythingSelected) {
-				if(objectsList.get(selectedIndex) instanceof Units) {
-					// Polymorphism
-					Units a = (Units)objectsList.get(selectedIndex);
-					a.setTarget(destPos);
-				}
-			}
-
-		} else if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+		 if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			// Reset each time click left button, there is only one object can be selected at a time
 			resetSelect(objectsList);
 			boolean isNewPosSelected = false;
@@ -79,26 +65,25 @@ public class World {
 			
 			for(int i=0;i<objectsList.size();i++) {
 				if((objectsList.get(i).getPos().distance(selectPos)<=App.SELECT_DISTANCE)) {
-					// Select a unit
+					// If a unit is selected
 					if(objectsList.get(i) instanceof Units) {
 						objectsList.get(i).setSelected(true);
-						
 						isAnythingSelected = true;
-					
 						selectedIndex = i;
 						isNewPosSelected = true;
-						
-						
 						// Break if there is a unit within the mouse since we want a unit instead of a building if they appear both
 						break;
 					}
+					// If a building is selected
 					else if(objectsList.get(i) instanceof Buildings) {
 						objectsList.get(i).setSelected(true);
 						isAnythingSelected = true;
 						selectedIndex = i;
 						isNewPosSelected = true;
 					}
-				} else {
+				} 
+				// No unit/building is selected
+				else {
 					objectsList.get(i).setSelected(false);
 				}
 			}	
@@ -173,10 +158,6 @@ public class World {
 	public int getDelta() {
 		return lastDelta;
 	}
-
-	public ArrayList<Objects> getList() {
-		return objectsList;
-	}
 	
 	public void resetSelect(ArrayList<Objects> list) {
 		for(int i=0;i<list.size();i++) {
@@ -199,5 +180,8 @@ public class World {
 	public void setCurrUnobtain(int currUnobtain) {
 		this.currUnobtain = currUnobtain;
 	}
-
+	
+	public Camera getCamera() {
+		return this.camera;
+	}
 }
