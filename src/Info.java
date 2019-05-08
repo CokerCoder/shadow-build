@@ -10,10 +10,10 @@ public class Info {
 	
 	public Info() {}
 	
-	public void renderInfo(World world, Graphics g, ArrayList<Objects> list, Camera camera) {
+	public void renderInfo(World world, Graphics g, ArrayList<Objects> list) {
 		
 		
-		g.drawString("Metal:  "+world.getCurrMetal()+"\nUnobtainium:  "+world.getCurrUnobtain(), camera.calcWorldX(DRAW_STRING_A), camera.calcWorldY(DRAW_STRING_A));
+		g.drawString("Metal:  "+world.getCurrMetal()+"\nUnobtainium:  "+world.getCurrUnobtain(), world.getCamera().calcWorldX(DRAW_STRING_A), world.getCamera().calcWorldY(DRAW_STRING_A));
 		
 		for(int i=0;i<list.size();i++) {
 			
@@ -21,13 +21,13 @@ public class Info {
 		
 			if(currObject.isSelected()) {
 				if(currObject instanceof Builder) {
-					g.drawString("1- Build Factory\n", camera.calcWorldX(DRAW_STRING_A), camera.calcWorldY(DRAW_STRING_B));
+					g.drawString("1- Build Factory\n", world.getCamera().calcWorldX(DRAW_STRING_A), world.getCamera().calcWorldY(DRAW_STRING_B));
 				}
 				else if(currObject instanceof Commandcentre) {
-					g.drawString("1- Create Scout\n2- Create Builder\n3- Create Engineer\n", camera.calcWorldX(DRAW_STRING_A), camera.calcWorldY(DRAW_STRING_B));
+					g.drawString("1- Create Scout\n2- Create Builder\n3- Create Engineer\n", world.getCamera().calcWorldX(DRAW_STRING_A), world.getCamera().calcWorldY(DRAW_STRING_B));
 				}
 				else if(currObject instanceof Factory) {
-					g.drawString("1- Train Truck\n", camera.calcWorldX(DRAW_STRING_A), camera.calcWorldY(DRAW_STRING_B));
+					g.drawString("1- Train Truck\n", world.getCamera().calcWorldX(DRAW_STRING_A), world.getCamera().calcWorldY(DRAW_STRING_B));
 				}
 			}
 		}

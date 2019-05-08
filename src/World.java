@@ -115,7 +115,7 @@ public class World {
 		}
 		
 		// Render the info after the objects to make the info stay on top of the obejcts
-		info.renderInfo(this, g, objectsList, camera);
+		info.renderInfo(this, g, objectsList);
 		
 	}
 	
