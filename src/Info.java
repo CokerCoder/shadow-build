@@ -8,18 +8,12 @@ public class Info {
 	public static final int DRAW_STRING_A = 32;
 	public static final int DRAW_STRING_B = 100;
 	
-	private int currMetal;
-	private int currUnobtain;
+	public Info() {}
 	
-	public Info() {
-		this.currMetal = 0;
-		this.currUnobtain = 0;
-	}
-	
-	public void renderInfo(Graphics g, ArrayList<Objects> list, Camera camera) {
+	public void renderInfo(World world, Graphics g, ArrayList<Objects> list, Camera camera) {
 		
 		
-		g.drawString("Metal:  "+this.currMetal+"\nUnobtainium:  "+this.currUnobtain, camera.calcWorldX(DRAW_STRING_A), camera.calcWorldY(DRAW_STRING_A));
+		g.drawString("Metal:  "+world.getCurrMetal()+"\nUnobtainium:  "+world.getCurrUnobtain(), camera.calcWorldX(DRAW_STRING_A), camera.calcWorldY(DRAW_STRING_A));
 		
 		for(int i=0;i<list.size();i++) {
 			
@@ -39,4 +33,5 @@ public class Info {
 		}
 		
 	}
+	
 }

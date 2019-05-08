@@ -32,6 +32,10 @@ public class World {
 	
 	// The position the player choose, update when left-click anywhere
 	private Vector2f selectPos = new Vector2f(0, 0);
+	
+	
+	private int currMetal;
+	private int currUnobtain;
 
 	
 	boolean isAnythingSelected = false;
@@ -125,7 +129,7 @@ public class World {
 		}
 		
 		// Render the info after the objects to make the info stay on top of the obejcts
-		info.renderInfo(g, objectsList, camera);
+		info.renderInfo(this, g, objectsList, camera);
 		
 	}
 	
@@ -179,5 +183,20 @@ public class World {
 		}
 	}
 
+	public int getCurrMetal() {
+		return currMetal;
+	}
+
+	public void setCurrMetal(int currMetal) {
+		this.currMetal = currMetal;
+	}
+
+	public int getCurrUnobtain() {
+		return currUnobtain;
+	}
+
+	public void setCurrUnobtain(int currUnobtain) {
+		this.currUnobtain = currUnobtain;
+	}
 
 }
