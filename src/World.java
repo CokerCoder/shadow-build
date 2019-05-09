@@ -26,6 +26,9 @@ public class World {
 	
 	private Input lastInput;
 	private int lastDelta;
+	
+	private boolean isCameraFollowWASD = false;
+	private Vector2f nextCameraPos;
 
 	// ArrayList of type Objects contains all the objects in this game
 	private ArrayList<Objects> objectsList = new ArrayList<Objects>();
@@ -54,9 +57,11 @@ public class World {
 		lastInput = input;
 		lastDelta = delta;
 		
+		nextCameraPos = camera.getLastTransPos();
+		
 		// Read the mouse
 		 if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			// Reset each time click left button, there is only one object can be selected at a time
+			 // Reset each time click left button, there is only one object can be selected at a time
 			resetSelect(objectsList);
 			boolean isNewPosSelected = false;
 			// Calculate the left button position respect to the world
@@ -91,6 +96,31 @@ public class World {
 				isAnythingSelected = false;
 			}
 		}
+		 
+		 else if(input.isKeyDown(Input.KEY_A)) {
+			 isCameraFollowWASD = true;
+			 if(nextCameraPos.x>App.WINDOW_WIDTH/2) {	
+			 	nextCameraPos.x -= Camera.CAMERA_MOVING_SPEED * delta;
+			 }
+		 }
+		 else if(input.isKeyDown(Input.KEY_D)) {
+			 isCameraFollowWASD = true;
+			 if(nextCameraPos.x+App.WINDOW_WIDTH/2<map.getTileWidth()*map.getWidth()) {
+				 nextCameraPos.x += Camera.CAMERA_MOVING_SPEED * delta;
+			 }
+		 }
+		 else if(input.isKeyDown(Input.KEY_S)) {
+			 isCameraFollowWASD = true;
+			 if(nextCameraPos.y+App.WINDOW_HEIGHT/2<map.getTileHeight()*map.getHeight()) {
+			 	nextCameraPos.y += Camera.CAMERA_MOVING_SPEED * delta;
+			 }
+		 }
+		 else if(input.isKeyDown(Input.KEY_W)) {
+			 isCameraFollowWASD = true;
+			 if(nextCameraPos.y>App.WINDOW_HEIGHT/2) {
+			 	nextCameraPos.y -= Camera.CAMERA_MOVING_SPEED * delta;
+			 }
+		 }
 		for(int i=0;i<objectsList.size();i++) {
 			objectsList.get(i).update(this);
 		}
@@ -100,7 +130,10 @@ public class World {
 	public void render(Graphics g) {
 		
 		// Firstly translate the camera based on the unit or building selected
-		if(isAnythingSelected && (!(objectsList.get(selectedIndex) instanceof Resources))) {
+		if(isCameraFollowWASD) {
+			camera.translate(g, nextCameraPos.x, nextCameraPos.y);
+		}
+		  else if(!isCameraFollowWASD && isAnythingSelected && (!(objectsList.get(selectedIndex) instanceof Resources))) {
 			camera.translate(g, objectsList.get(selectedIndex).getPos().x, objectsList.get(selectedIndex).getPos().y);
 		} else if(!isAnythingSelected) {
 			camera.translate(g, camera.getLastTransPos().x, camera.getLastTransPos().y);

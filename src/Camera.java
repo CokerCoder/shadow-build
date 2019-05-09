@@ -9,6 +9,8 @@ import org.newdawn.slick.tiled.TiledMap;
 
 public class Camera {
 	
+	public static final float CAMERA_MOVING_SPEED = 0.4f;
+	
 	// Amount of pixels need to be transfered when renedering the map
 	private float transX, transY;
 	// Size of the map used to check if out of bound
@@ -33,7 +35,7 @@ public class Camera {
 		this.mapWidth = mapWidth;
 		this.mapHeight = mapHeight;
 		
-		this.lastTransPos = new Vector2f(0, 0);
+		this.lastTransPos = new Vector2f(App.WINDOW_WIDTH/2, App.WINDOW_HEIGHT/2);
 	}
 	
 	// Calculate the movement along the x and y axis
