@@ -61,7 +61,8 @@ public class World {
 		
 		// Read the mouse
 		 if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			 // Reset each time click left button, there is only one object can be selected at a time
+			isCameraFollowWASD = false;
+			// Reset each time click left button, there is only one object can be selected at a time
 			resetSelect(objectsList);
 			boolean isNewPosSelected = false;
 			// Calculate the left button position respect to the world
