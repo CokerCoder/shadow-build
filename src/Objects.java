@@ -19,7 +19,7 @@ public abstract class Objects {
 		map = new TiledMap(World.mapLocation);
 	}
 	
-	public abstract void update(World world);
+	public abstract void update(World world) throws SlickException;
 	
 	public abstract void render();
 

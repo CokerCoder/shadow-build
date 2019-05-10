@@ -37,8 +37,8 @@ public class World {
 	private Vector2f selectPos = new Vector2f(0, 0);
 	
 	// Keep track of the current amount of resources thr player hold
-	private int currMetal;
-	private int currUnobtain;
+	private int currMetal = 100;
+	private int currUnobtain = 100;
 
 	// Keep track of the current selected object
 	boolean isAnythingSelected = false;
@@ -53,7 +53,8 @@ public class World {
 		loadInitialObjects(objectsList);
 	}
 	
-	public void update(Input input, int delta) {
+	public void update(Input input, int delta) throws SlickException {
+
 		lastInput = input;
 		lastDelta = delta;
 		
@@ -217,5 +218,9 @@ public class World {
 	
 	public Camera getCamera() {
 		return this.camera;
+	}
+	
+	public ArrayList<Objects> getList() {
+		return this.objectsList;
 	}
 }

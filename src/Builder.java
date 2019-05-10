@@ -16,6 +16,7 @@ public class Builder extends Units {
 	@Override
 	public void update(World world) {
 		// TODO Auto-generated method stub
+		super.update(world);
 		
 	}
 	

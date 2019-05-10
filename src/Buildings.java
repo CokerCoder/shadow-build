@@ -13,10 +13,13 @@ public abstract class Buildings extends Objects {
 	}
 	
 	public void render() {
-		if(super.isSelected()&&(!(this instanceof Pylon))) {
+		if(!super.isSelected()) {
 			super.getImage().drawCentered(super.getPos().x, super.getPos().y);
+			
+		} 
+		else if (!(this instanceof Pylon)) {
+			
 			highlight.drawCentered(super.getPos().x, super.getPos().y);
-		} else {
 			super.getImage().drawCentered(super.getPos().x, super.getPos().y);
 		}
 	}
