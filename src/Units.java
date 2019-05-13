@@ -21,7 +21,7 @@ public abstract class Units extends Objects{
 	}
 	
 
-	public void update(World world) {
+	public void update(World world) throws SlickException {
 		
 		if(super.isSelected()&&world.getInput().isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 			
@@ -61,6 +61,11 @@ public abstract class Units extends Objects{
 	public boolean isPositionFree(Vector2f pos) {
 		int tileId = getMap().getTileId((int)(pos.x/getMap().getTileWidth()), (int)(pos.y/getMap().getTileHeight()), 0);
 		return !Boolean.parseBoolean(getMap().getTileProperty(tileId, World.SOLID_PROPERTY, "false"));
+	}
+	
+	public boolean isPositionNotOccupied(Vector2f pos) {
+		int tileId = getMap().getTileId((int)(pos.x/getMap().getTileWidth()), (int)(pos.y/getMap().getTileHeight()), 0);
+		return !Boolean.parseBoolean(getMap().getTileProperty(tileId, World.OCCUPIED_PROPERTY, "false"));
 	}
 
 	public void setSpeed(float speed) {
