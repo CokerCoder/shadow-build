@@ -1,3 +1,4 @@
+command_centre,500,500
 command_centre,812,748
 metal_mine,1088,704
 metal_mine,1024,704
@@ -17,3 +18,4 @@ pylon,224,160
 engineer,812,812
 engineer,200,200
 scout,400,400
+factory,600,600
