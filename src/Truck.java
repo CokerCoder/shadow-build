@@ -13,7 +13,7 @@ public class Truck extends Units {
 	}
 
 	@Override
-	public void update(World world) {
-		// TODO Auto-generated method stub
+	public void update(World world) throws SlickException {
+		super.update(world);
 	}
 }

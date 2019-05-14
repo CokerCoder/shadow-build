@@ -30,7 +30,7 @@ public class Factory extends Buildings {
 				isTraining = false;
 				trainingTime = 0;
 
-				world.getList().add(new Scout(super.getPos().x, super.getPos().y));
+				world.getList().add(new Truck(super.getPos().x, super.getPos().y));
 				world.setCurrMetal(world.getCurrMetal() - TRUCK_COST);
 			}
 		}

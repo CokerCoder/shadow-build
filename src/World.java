@@ -92,7 +92,7 @@ public class World {
 						isNewPosSelected = true;
 					}
 				}
-				// No unit/building is within
+				// No unit/building is within the click
 				else {
 					objectsList.get(i).setSelected(false);
 				}
