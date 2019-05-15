@@ -37,7 +37,7 @@ public class World {
 	private Vector2f selectPos = new Vector2f(0, 0);
 
 	// Keep track of the current amount of resources the player hold
-	private int currMetal = 300;
+	private int currMetal = 3000;
 	private int currUnobtain = 100;
 
 	// Keep track of the current selected object
@@ -99,6 +99,7 @@ public class World {
 			}
 			if (!isNewPosSelected) {
 				isAnythingSelected = false;
+				selectedIndex = -1;
 			}
 		}
 
@@ -125,8 +126,14 @@ public class World {
 			}
 		}
 
-		// Loop to update each of the objects
+		if (isAnythingSelected) {
+			objectsList.get(selectedIndex).update(this);
+		}
+
 		for (int i = 0; i < objectsList.size(); i++) {
+			if (i == selectedIndex) {
+				continue;
+			}
 			objectsList.get(i).update(this);
 		}
 

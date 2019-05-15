@@ -18,9 +18,7 @@ public class Factory extends Buildings {
 
 	@Override
 	public void update(World world) throws SlickException {
-
-		if (world.getInput().isKeyPressed(Input.KEY_1) && super.isSelected() && world.getCurrMetal() >= TRUCK_COST) {
-			System.out.println("Start training");
+		if (world.getInput().isKeyDown(Input.KEY_1) && super.isSelected() && world.getCurrMetal() >= TRUCK_COST) {
 			isTraining = true;
 			trainingTime = 0;
 		}

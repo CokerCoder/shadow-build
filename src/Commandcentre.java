@@ -27,7 +27,6 @@ public class Commandcentre extends Buildings {
 		// Here, if I put the isSelected before the three if conditions, the code
 		// doesn't work, it works
 		if (world.getInput().isKeyPressed(Input.KEY_1) && super.isSelected() && world.getCurrMetal() >= SCOUT_COST) {
-			System.out.println("Start training");
 			trainingTime = 0;
 			isTraining = true;
 			trainingType = 1;
