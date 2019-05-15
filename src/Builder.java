@@ -21,7 +21,7 @@ public class Builder extends Units {
 	@Override
 	public void update(World world) throws SlickException {
 		// If 2 is pressed, starting to train
-		if (world.getInput().isKeyPressed(Input.KEY_2)) {
+		if (world.getInput().isKeyPressed(Input.KEY_1) && World.isPositionNotOccupied(super.getPos())) {
 			isTraining = true;
 			trainingTime = 0;
 			// Set the target position to its current position to let it stay at the same

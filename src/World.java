@@ -40,6 +40,8 @@ public class World {
 	private int currMetal = 3000;
 	private int currUnobtain = 100;
 
+	private int numberOfPylonsActivated = 0;
+
 	// Keep track of the current selected object
 	boolean isAnythingSelected = false;
 	int selectedIndex = -1;
@@ -252,5 +254,13 @@ public class World {
 
 	public ArrayList<Objects> getList() {
 		return this.objectsList;
+	}
+
+	public int getNumberOfPylonsActivated() {
+		return numberOfPylonsActivated;
+	}
+
+	public void setNumberOfPylonsActivated(int numberOfPylonsActivated) {
+		this.numberOfPylonsActivated = numberOfPylonsActivated;
 	}
 }
