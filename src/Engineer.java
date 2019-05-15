@@ -1,45 +1,77 @@
 import java.util.ArrayList;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
 
 public class Engineer extends Units {
 
 	public static final String imageLocation = "assets/units/engineer.png";
 	public static final float ENGINEER_SPEED = 0.1f;
+	public static final int MINING_TIME = 5;
+	public static final int STARTING_AMOUNT = 2;
 
 	private boolean isMining = false;
+	private int miningTime = 0;
+	private int amountCarrying = 0;
 
-	// Current amount of resources the engineer is carrying
-	private int amountCarried = 0;
-	private Vector2f targetMine;
-	private int targetMineIndex = 0;
-	private Vector2f targetCC;
-
-	// Time spent near a resource
-	int timeNearResource;
+	private Resources targetMine;
+	private Commandcentre targetCC;
 
 	public Engineer(float x, float y) throws SlickException {
 		super(x, y);
 		this.setImage(new Image(imageLocation));
 		this.setSpeed(ENGINEER_SPEED);
-		this.targetMine = new Vector2f(-1, -1);
-		this.targetCC = new Vector2f(-1, -1);
 	}
 
 	@Override
 	public void update(World world) throws SlickException {
-		super.update(world);
+		if (!isMining) {
+			super.update(world);
+			// Keep checking if there is a engineer nearby
+			isNearResource(world.getList());
+		} else {
+			mine(world);
+			dropMine(world);
+			// If the engineer is carrying nothing he should head to the mine
+			if (amountCarrying == 0) {
+				super.setTarget(targetMine.getPos());
+			} else if (amountCarrying > 0) {
+				super.setTarget(targetCC.getPos());
+			}
+			super.update(world);
+		}
+	}
+
+	// Method to mine
+	public void mine(World world) {
+		if (super.getPos().distance(targetMine.getPos()) <= App.SELECT_DISTANCE) {
+			miningTime += world.getDelta();
+			if (miningTime / 1000 == MINING_TIME) {
+				amountCarrying += STARTING_AMOUNT + world.getNumberOfPylonsActivated();
+				targetMine.setAmount(targetMine.getAmount() - amountCarrying);
+				miningTime = 0;
+			}
+		}
+	}
+
+	public void dropMine(World world) {
+		if (super.getPos().distance(targetCC.getPos()) <= App.SELECT_DISTANCE) {
+			if (targetMine instanceof Metal) {
+				world.setCurrMetal(world.getCurrMetal() + amountCarrying);
+			} else if (targetMine instanceof Unobtainium) {
+				world.setCurrUnobtain(world.getCurrUnobtain() + amountCarrying);
+			}
+			amountCarrying = 0;
+		}
 	}
 
 	// Return the vector position of the nearest coomand centre
-	public Vector2f findNearestCC(ArrayList<Objects> list) {
+	public Commandcentre findNearestCC(ArrayList<Objects> list) {
 		// Set the current minimum distance to infinity for now
 		double distance = Double.POSITIVE_INFINITY;
 		int nearestIndex = -1;
-		int i;
-		for (i = 0; i < list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i) instanceof Commandcentre) {
+				// Check the position of the CC and the engineer
 				double newDistance = super.getPos().distance(list.get(i).getPos());
 				if (newDistance < distance) {
 					distance = newDistance;
@@ -47,31 +79,18 @@ public class Engineer extends Units {
 				}
 			}
 		}
-		targetCC = list.get(nearestIndex).getPos();
-		return targetCC;
+		return (Commandcentre) list.get(nearestIndex);
 	}
 
-	public void isNearResource(Objects[] objectList, int numberOfObjects) {
-		int i;
-		for (i = 0; i < numberOfObjects; i++) {
-			if (objectList[i] instanceof Resources) {
-				Resources check = (Resources) objectList[i];
-				if (super.getPos().distance(objectList[i].getPos()) <= 10) {
-
-					System.out.println("Target mine position: " + " " + targetMine.x + " " + targetMine.y);
-
-					targetMine = objectList[i].getPos();
-					targetMineIndex = i;
+	public void isNearResource(ArrayList<Objects> list) {
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i) instanceof Resources) {
+				if (super.getPos().distance(list.get(i).getPos()) <= App.SELECT_DISTANCE) {
 					isMining = true;
-				} else {
+					targetMine = (Resources) list.get(i);
+					targetCC = findNearestCC(list);
 				}
 			}
 		}
-		isMining = false;
 	}
-
-	public void resetAmount() {
-		this.amountCarried = 0;
-	}
-
 }
