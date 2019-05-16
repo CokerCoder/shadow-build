@@ -37,8 +37,8 @@ public class World {
 	private Vector2f selectPos = new Vector2f(0, 0);
 
 	// Keep track of the current amount of resources the player hold
-	private int currMetal = 3000;
-	private int currUnobtain = 100;
+	private int currMetal = 0;
+	private int currUnobtain = 0;
 
 	private int numberOfPylonsActivated = 0;
 

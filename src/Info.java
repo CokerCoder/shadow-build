@@ -30,6 +30,9 @@ public class Info {
 				} else if (currObject instanceof Factory) {
 					g.drawString("1- Train Truck\n", world.getCamera().calcWorldX(DRAW_STRING_A),
 							world.getCamera().calcWorldY(DRAW_STRING_B));
+				} else if (currObject instanceof Truck) {
+					g.drawString("1- Build Command Centre\n", world.getCamera().calcWorldX(DRAW_STRING_A),
+							world.getCamera().calcWorldY(DRAW_STRING_B));
 				}
 			}
 		}
