@@ -26,7 +26,7 @@ public class Engineer extends Units {
 	public void update(World world) throws SlickException {
 		if (!isMining) {
 			super.update(world);
-			// Keep checking if there is a engineer nearby
+			// Keep checking if there is a mine nearby
 			isNearResource(world.getList());
 		} else {
 			mine(world);
@@ -85,7 +85,8 @@ public class Engineer extends Units {
 	public void isNearResource(ArrayList<Objects> list) {
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i) instanceof Resources) {
-				if (super.getPos().distance(list.get(i).getPos()) <= App.SELECT_DISTANCE) {
+				if (super.getTarget().distance(list.get(i).getPos()) <= App.SELECT_DISTANCE && 
+						super.getPos().distance(super.getTarget()) <= App.SELECT_DISTANCE) {
 					isMining = true;
 					targetMine = (Resources) list.get(i);
 					targetCC = findNearestCC(list);
