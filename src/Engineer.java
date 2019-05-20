@@ -30,6 +30,9 @@ public class Engineer extends Units {
 			isNearResource(world.getList());
 		} else {
 			mine(world);
+			if(!isMining) {
+				return;
+			}
 			dropMine(world);
 			// If the engineer is carrying nothing he should head to the mine
 			if (amountCarrying == 0) {
@@ -46,9 +49,21 @@ public class Engineer extends Units {
 		if (super.getPos().distance(targetMine.getPos()) <= App.SELECT_DISTANCE) {
 			miningTime += world.getDelta();
 			if (miningTime / 1000 == MINING_TIME) {
-				amountCarrying += STARTING_AMOUNT + world.getNumberOfPylonsActivated();
-				targetMine.setAmount(targetMine.getAmount() - amountCarrying);
-				miningTime = 0;
+				if(this.targetMine.getAmount()>=STARTING_AMOUNT + world.getNumberOfPylonsActivated()) {
+					amountCarrying = STARTING_AMOUNT + world.getNumberOfPylonsActivated();
+					targetMine.setAmount(targetMine.getAmount() - amountCarrying);
+					miningTime = 0;
+				}
+				else if(this.targetMine.getAmount()>=0 && this.targetMine.getAmount()<=(STARTING_AMOUNT + world.getNumberOfPylonsActivated())) {
+					amountCarrying = targetMine.getAmount();
+					targetMine.setAmount(0);
+					miningTime = 0;
+				}
+				else if(this.targetMine.getAmount()<=0) {
+					this.isMining = false;
+					this.miningTime = 0;
+					return;
+				}
 			}
 		}
 	}
