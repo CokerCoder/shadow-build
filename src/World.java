@@ -263,4 +263,8 @@ public class World {
 	public void setNumberOfPylonsActivated(int numberOfPylonsActivated) {
 		this.numberOfPylonsActivated = numberOfPylonsActivated;
 	}
+	
+	public TiledMap getMap() {
+		return World.map;
+	}
 }
