@@ -37,10 +37,13 @@ public class Engineer extends Units {
 				miningTime = 0;
 			}
 		} else {
-			mine(world);
-			if(!isMining) {
+			// If the user move the engineer away while mining, the engineer stops and move the new position
+			if(world.getInput().isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
+				isMining = false;
+				super.update(world);
 				return;
 			}
+			mine(world);
 			dropMine(world);
 			// If the engineer is carrying nothing he should head to the mine
 			if (amountCarrying == 0) {
