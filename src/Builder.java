@@ -7,7 +7,7 @@ public class Builder extends Units {
 	public static final String imageLocation = "assets/units/builder.png";
 	public static final float BUILDER_SPEED = 0.1f;
 	public static final int TRAINING_TIME = 10;
-	public static final int TRUCK_COST = 100;
+	public static final int FACTORY_COST = 100;
 
 	private boolean isTraining = false;
 	private int trainingTime = 0;
@@ -39,7 +39,7 @@ public class Builder extends Units {
 			if (trainingTime / 1000 == TRAINING_TIME) {
 				trainingTime = 0;
 				isTraining = false;
-				world.setCurrMetal(world.getCurrMetal() - TRUCK_COST);
+				world.setCurrMetal(world.getCurrMetal() - FACTORY_COST);
 				world.getList().add(new Factory(super.getPos().x, super.getPos().y));
 			}
 		}
