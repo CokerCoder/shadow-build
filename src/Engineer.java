@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 public class Engineer extends Units {
@@ -26,8 +27,15 @@ public class Engineer extends Units {
 	public void update(World world) throws SlickException {
 		if (!isMining) {
 			super.update(world);
-			// Keep checking if there is a mine nearby
-			isNearResource(world.getList());
+			// When a engineer stays at a position 5 seconds, check if start mining
+			if(super.getPos().distance(super.getTarget())<=App.SELECT_DISTANCE) {
+				miningTime += world.getDelta();
+				if(miningTime / 1000 == MINING_TIME) {
+					isNearResource(world.getList());
+				}
+			} else {
+				miningTime = 0;
+			}
 		} else {
 			mine(world);
 			if(!isMining) {
@@ -45,7 +53,7 @@ public class Engineer extends Units {
 	}
 
 	// Method to mine
-	public void mine(World world) {
+	public void mine(World world) throws SlickException {
 		if (super.getPos().distance(targetMine.getPos()) <= App.SELECT_DISTANCE) {
 			miningTime += world.getDelta();
 			if (miningTime / 1000 == MINING_TIME) {
@@ -100,8 +108,7 @@ public class Engineer extends Units {
 	public void isNearResource(ArrayList<Objects> list) {
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i) instanceof Resources) {
-				if (super.getTarget().distance(list.get(i).getPos()) <= App.SELECT_DISTANCE && 
-						super.getPos().distance(super.getTarget()) <= App.SELECT_DISTANCE) {
+				if (super.getPos().distance(list.get(i).getPos()) <= App.SELECT_DISTANCE) {
 					isMining = true;
 					targetMine = (Resources) list.get(i);
 					targetCC = findNearestCC(list);
