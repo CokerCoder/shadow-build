@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 
 public class Engineer extends Units {
 
@@ -40,6 +41,7 @@ public class Engineer extends Units {
 			// If the user move the engineer away while mining, the engineer stops and move the new position
 			if(world.getInput().isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 				isMining = false;
+				super.setTarget(new Vector2f(world.getCamera().calcWorldX(world.getInput().getMouseX()), world.getCamera().calcWorldY(world.getInput().getMouseY())));
 				super.update(world);
 				return;
 			}
