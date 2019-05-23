@@ -64,11 +64,15 @@ public class Engineer extends Units {
 					amountCarrying = STARTING_AMOUNT + world.getNumberOfPylonsActivated();
 					targetMine.setAmount(targetMine.getAmount() - amountCarrying);
 					miningTime = 0;
+					// Check if there is closer Command Centre
+					targetCC = findNearestCC(world.getList());
+					
 				}
 				else if(this.targetMine.getAmount()>=0 && this.targetMine.getAmount()<=(STARTING_AMOUNT + world.getNumberOfPylonsActivated())) {
 					amountCarrying = targetMine.getAmount();
 					targetMine.setAmount(0);
 					miningTime = 0;
+					
 				}
 				else if(this.targetMine.getAmount()<=0) {
 					this.isMining = false;
