@@ -13,8 +13,4 @@ public class Unobtainium extends Resources {
 		super.setAmount(initialAmount);
 	}
 
-	@Override
-	public void update(World world) {
-		super.update(world);
-	}
 }

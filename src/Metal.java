@@ -13,8 +13,4 @@ public class Metal extends Resources {
 		super.setAmount(initialAmount);
 	}
 
-	@Override
-	public void update(World world) {
-		// TODO Auto-generated method stub
-	}
 }
