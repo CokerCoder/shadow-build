@@ -1,4 +1,5 @@
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
@@ -25,6 +26,8 @@ public class Camera {
 	// So everything inside the viewport will be drawn on the screen
 	// The camera starting position is its top-left corner
 	private Rectangle viewPort;
+	
+	private boolean isFollowingWASD = false;
 
 	// Camera constructor
 	public Camera(TiledMap map, int mapWidth, int mapHeight) {
@@ -79,6 +82,31 @@ public class Camera {
 		viewPort.setX(-transX);
 		viewPort.setY(-transY);
 	}
+	
+	// Method to translate the map based on the WASD keys
+	public void translateWASD(World world) {
+		if (world.getInput().isKeyDown(Input.KEY_A)) {
+			this.isFollowingWASD = true;
+			if (this.getLastTransPos().x > App.WINDOW_WIDTH / 2) {
+				this.getLastTransPos().x -= Camera.CAMERA_MOVING_SPEED * world.getDelta();
+			}
+		} else if (world.getInput().isKeyDown(Input.KEY_D)) {
+			this.isFollowingWASD = true;
+			if (this.getLastTransPos().x + App.WINDOW_WIDTH / 2 < world.getMap().getTileWidth() * world.getMap().getWidth()) {
+				this.getLastTransPos().x += Camera.CAMERA_MOVING_SPEED * world.getDelta();
+			}
+		} else if (world.getInput().isKeyDown(Input.KEY_S)) {
+			this.isFollowingWASD = true;
+			if (this.getLastTransPos().y + App.WINDOW_HEIGHT / 2 < world.getMap().getTileHeight() * world.getMap().getHeight()) {
+				this.getLastTransPos().y += Camera.CAMERA_MOVING_SPEED * world.getDelta();
+			}
+		} else if (world.getInput().isKeyDown(Input.KEY_W)) {
+			this.isFollowingWASD = true;
+			if (this.getLastTransPos().y > App.WINDOW_HEIGHT / 2) {
+				this.getLastTransPos().y -= Camera.CAMERA_MOVING_SPEED * world.getDelta();
+			}
+		}
+	}
 
 	// Hepler method to calculate a point position in a World perpective (the total
 	// map)
@@ -93,5 +121,13 @@ public class Camera {
 
 	public Vector2f getLastTransPos() {
 		return lastTransPos;
+	}
+	
+	public boolean getWASD() {
+		return this.isFollowingWASD;
+	}
+	
+	public void setWASD(boolean isFollowingWASD) {
+		this.isFollowingWASD = isFollowingWASD;
 	}
 }

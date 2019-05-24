@@ -27,9 +27,6 @@ public class World {
 	private Input lastInput;
 	private int lastDelta;
 
-	private boolean isCameraFollowWASD = false;
-	private Vector2f nextCameraPos;
-
 	// ArrayList of type Objects contains all the objects in this game
 	private ArrayList<Objects> objectsList = new ArrayList<Objects>();
 
@@ -60,10 +57,9 @@ public class World {
 		lastInput = input;
 		lastDelta = delta;
 
-		nextCameraPos = camera.getLastTransPos();
 		// Read the mouse
 		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			isCameraFollowWASD = false;
+			camera.setWASD(false);
 			// Reset selection each time click left button
 			resetSelection();
 			boolean isNewPosSelected = false;
@@ -104,30 +100,11 @@ public class World {
 				selectedIndex = -1;
 			}
 		}
-
-		// Conditions to move aroung the camera (need to move to camera class)
-		else if (input.isKeyDown(Input.KEY_A)) {
-			isCameraFollowWASD = true;
-			if (nextCameraPos.x > App.WINDOW_WIDTH / 2) {
-				nextCameraPos.x -= Camera.CAMERA_MOVING_SPEED * delta;
-			}
-		} else if (input.isKeyDown(Input.KEY_D)) {
-			isCameraFollowWASD = true;
-			if (nextCameraPos.x + App.WINDOW_WIDTH / 2 < map.getTileWidth() * map.getWidth()) {
-				nextCameraPos.x += Camera.CAMERA_MOVING_SPEED * delta;
-			}
-		} else if (input.isKeyDown(Input.KEY_S)) {
-			isCameraFollowWASD = true;
-			if (nextCameraPos.y + App.WINDOW_HEIGHT / 2 < map.getTileHeight() * map.getHeight()) {
-				nextCameraPos.y += Camera.CAMERA_MOVING_SPEED * delta;
-			}
-		} else if (input.isKeyDown(Input.KEY_W)) {
-			isCameraFollowWASD = true;
-			if (nextCameraPos.y > App.WINDOW_HEIGHT / 2) {
-				nextCameraPos.y -= Camera.CAMERA_MOVING_SPEED * delta;
-			}
-		}
-
+		
+		// Detect update on keys WASD
+		camera.translateWASD(this);
+		
+		// Update the object that is currently selected first, then update the rest
 		if (isAnythingSelected) {
 			objectsList.get(selectedIndex).update(this);
 		}
@@ -144,11 +121,11 @@ public class World {
 	public void render(Graphics g) {
 
 		// If the user pressed WASD, the camera should follow WASD primaryly
-		if (isCameraFollowWASD) {
-			camera.translate(g, nextCameraPos.x, nextCameraPos.y);
+		if (camera.getWASD()) {
+			camera.translate(g, camera.getLastTransPos().x, camera.getLastTransPos().y);
 		}
 		// If a unit or a building is selected, the camera should follow it
-		else if (!isCameraFollowWASD && isAnythingSelected
+		else if (!camera.getWASD() && isAnythingSelected
 				&& (!(objectsList.get(selectedIndex) instanceof Resources))) {
 			camera.translate(g, objectsList.get(selectedIndex).getPos().x, objectsList.get(selectedIndex).getPos().y);
 		}
