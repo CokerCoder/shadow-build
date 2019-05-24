@@ -41,7 +41,7 @@ public abstract class Units extends Objects {
 		}
 	}
 
-	public void moveTo(World world) {
+	private void moveTo(World world) {
 		// Move the unit to its target position
 		// Set the angle to the destination
 		angle = Math.atan2(target.y - super.getPos().y, target.x - super.getPos().x);

@@ -100,10 +100,10 @@ public class World {
 				selectedIndex = -1;
 			}
 		}
-		
+
 		// Detect update on keys WASD
 		camera.translateWASD(this);
-		
+
 		// Update the object that is currently selected first, then update the rest
 		if (isAnythingSelected) {
 			objectsList.get(selectedIndex).update(this);
@@ -125,8 +125,7 @@ public class World {
 			camera.translate(g, camera.getLastTransPos().x, camera.getLastTransPos().y);
 		}
 		// If a unit or a building is selected, the camera should follow it
-		else if (!camera.getWASD() && isAnythingSelected
-				&& (!(objectsList.get(selectedIndex) instanceof Resources))) {
+		else if (!camera.getWASD() && isAnythingSelected && (!(objectsList.get(selectedIndex) instanceof Resources))) {
 			camera.translate(g, objectsList.get(selectedIndex).getPos().x, objectsList.get(selectedIndex).getPos().y);
 		}
 		// If click anywhere else and nothing is selected, the camera stop following and
@@ -148,7 +147,7 @@ public class World {
 
 	}
 
-	public void loadInitialObjects() throws SlickException {
+	private void loadInitialObjects() throws SlickException {
 
 		// Read CSV
 		// Same structure as the code in the lecture slide
@@ -240,7 +239,7 @@ public class World {
 	public void setNumberOfPylonsActivated(int numberOfPylonsActivated) {
 		this.numberOfPylonsActivated = numberOfPylonsActivated;
 	}
-	
+
 	public TiledMap getMap() {
 		return World.map;
 	}

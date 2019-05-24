@@ -29,19 +29,21 @@ public class Engineer extends Units {
 		if (!isMining) {
 			super.update(world);
 			// When a engineer stays at a position 5 seconds, check if start mining
-			if(super.getPos().distance(super.getTarget())<=App.SELECT_DISTANCE) {
+			if (super.getPos().distance(super.getTarget()) <= App.SELECT_DISTANCE) {
 				miningTime += world.getDelta();
-				if(miningTime / 1000 == MINING_TIME) {
+				if (miningTime / 1000 == MINING_TIME) {
 					isNearResource(world.getList());
 				}
 			} else {
 				miningTime = 0;
 			}
 		} else {
-			// If the user move the engineer away while mining, the engineer stops and move the new position
-			if(world.getInput().isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
+			// If the user move the engineer away while mining, the engineer stops and move
+			// the new position
+			if (world.getInput().isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 				isMining = false;
-				super.setTarget(new Vector2f(world.getCamera().calcWorldX(world.getInput().getMouseX()), world.getCamera().calcWorldY(world.getInput().getMouseY())));
+				super.setTarget(new Vector2f(world.getCamera().calcWorldX(world.getInput().getMouseX()),
+						world.getCamera().calcWorldY(world.getInput().getMouseY())));
 				super.update(world);
 				return;
 			}
@@ -58,25 +60,24 @@ public class Engineer extends Units {
 	}
 
 	// Method to mine
-	public void mine(World world) throws SlickException {
+	private void mine(World world) throws SlickException {
 		if (super.getPos().distance(targetMine.getPos()) <= App.SELECT_DISTANCE) {
 			miningTime += world.getDelta();
 			if (miningTime / 1000 == MINING_TIME) {
-				if(this.targetMine.getAmount()>=STARTING_AMOUNT + world.getNumberOfPylonsActivated()) {
+				if (this.targetMine.getAmount() >= STARTING_AMOUNT + world.getNumberOfPylonsActivated()) {
 					amountCarrying = STARTING_AMOUNT + world.getNumberOfPylonsActivated();
 					targetMine.setAmount(targetMine.getAmount() - amountCarrying);
 					miningTime = 0;
 					// Check if there is closer Command Centre
 					targetCC = findNearestCC(world.getList());
-					
-				}
-				else if(this.targetMine.getAmount()>=0 && this.targetMine.getAmount()<=(STARTING_AMOUNT + world.getNumberOfPylonsActivated())) {
+
+				} else if (this.targetMine.getAmount() >= 0
+						&& this.targetMine.getAmount() <= (STARTING_AMOUNT + world.getNumberOfPylonsActivated())) {
 					amountCarrying = targetMine.getAmount();
 					targetMine.setAmount(0);
 					miningTime = 0;
-					
-				}
-				else if(this.targetMine.getAmount()<=0) {
+
+				} else if (this.targetMine.getAmount() <= 0) {
 					this.isMining = false;
 					this.miningTime = 0;
 					return;
@@ -85,7 +86,7 @@ public class Engineer extends Units {
 		}
 	}
 
-	public void dropMine(World world) {
+	private void dropMine(World world) {
 		if (super.getPos().distance(targetCC.getPos()) <= App.SELECT_DISTANCE) {
 			if (targetMine instanceof Metal) {
 				world.setCurrMetal(world.getCurrMetal() + amountCarrying);
@@ -97,7 +98,7 @@ public class Engineer extends Units {
 	}
 
 	// Return the vector position of the nearest coomand centre
-	public Commandcentre findNearestCC(ArrayList<Objects> list) {
+	private Commandcentre findNearestCC(ArrayList<Objects> list) {
 		// Set the current minimum distance to infinity for now
 		double distance = Double.POSITIVE_INFINITY;
 		int nearestIndex = -1;
@@ -114,7 +115,7 @@ public class Engineer extends Units {
 		return (Commandcentre) list.get(nearestIndex);
 	}
 
-	public void isNearResource(ArrayList<Objects> list) {
+	private void isNearResource(ArrayList<Objects> list) {
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i) instanceof Resources) {
 				if (super.getPos().distance(list.get(i).getPos()) <= App.SELECT_DISTANCE) {

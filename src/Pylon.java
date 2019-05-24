@@ -31,7 +31,7 @@ public class Pylon extends Buildings {
 		}
 	}
 
-	public boolean isUnitsNearby(World world) {
+	private boolean isUnitsNearby(World world) {
 		for (int i = 0; i < world.getList().size(); i++) {
 			// If a unit come nearby, active it
 			if (world.getList().get(i) instanceof Units) {
