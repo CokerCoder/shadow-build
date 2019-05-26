@@ -46,7 +46,7 @@ public class Builder extends Units {
 	@Override
 	public void update(World world) throws SlickException {
 		// If 2 is pressed, starting to train
-		if (world.getInput().isKeyPressed(Input.KEY_1) && World.isPositionNotOccupied(super.getPos())) {
+		if (world.getInput().isKeyPressed(Input.KEY_1) && World.isPositionNotOccupied(super.getPos()) && world.getCurrMetal()>=FACTORY_COST) {
 			isBuilding = true;
 			buildingTime = 0;
 			// Set the target position to its current position to let it stay at the same
