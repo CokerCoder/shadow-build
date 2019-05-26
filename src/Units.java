@@ -3,8 +3,15 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
+/**
+ * A Unit can be different types: Scout, builder, engineer and truck, all units can move
+ *
+ */
 public abstract class Units extends Objects {
 
+	/**
+	 * Location of the highlight image of a unit
+	 */
 	public static final String HIGHLIGHT_IMAGE = "assets/highlight.png";
 
 	// Common arrtibutes for every unit
@@ -13,12 +20,21 @@ public abstract class Units extends Objects {
 	private Vector2f target;
 	private Image highlight = new Image(HIGHLIGHT_IMAGE);
 
+	/**
+	 * @param x
+	 * @param y
+	 * @throws SlickException
+	 * Constructor
+	 */
 	public Units(float x, float y) throws SlickException {
 		super(x, y);
 		// At the start, the unit are not moving
 		target = super.getPos();
 	}
 
+	/* (non-Javadoc)
+	 * @see Objects#update(World)
+	 */
 	public void update(World world) throws SlickException {
 		if (super.isSelected() && world.getInput().isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 			// Calculate the right button position respect to the world using the function
@@ -30,6 +46,9 @@ public abstract class Units extends Objects {
 		moveTo(world);
 	}
 
+	/* (non-Javadoc)
+	 * @see Objects#render()
+	 */
 	public void render() {
 		// If the unit isn't selected, render the normal image, otherwise render it with
 		// its highlight image
@@ -56,14 +75,25 @@ public abstract class Units extends Objects {
 		}
 	}
 
+	/**
+	 * @param speed
+	 * Set the speed of this unit
+	 */
 	public void setSpeed(float speed) {
 		this.speed = speed;
 	}
 
+	/**
+	 * @return the current target (destination) of this unit
+	 */
 	public Vector2f getTarget() {
 		return target;
 	}
 
+	/**
+	 * @param target
+	 * Set the target of the unit
+	 */
 	public void setTarget(Vector2f target) {
 		this.target = target;
 	}

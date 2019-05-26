@@ -9,14 +9,30 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 
-/* This class contains all the objects in the game */
+/**
+ * 
+ * Represent the game world, contains all the objects used in this game
+ *
+ */
 
 public class World {
 
+	/**
+	 * The location of the map
+	 */
 	public static final String mapLocation = "assets/main.tmx";
+	/**
+	 * The location of the CSV file used to load the initial objects
+	 */
 	public static final String csvLocation = "assets/objects.csv";
 
+	/**
+	 * Name of the solid property
+	 */
 	public static final String SOLID_PROPERTY = "solid";
+	/**
+	 * Name of the occupied property
+	 */
 	public static final String OCCUPIED_PROPERTY = "occupied";
 
 	// Set the local variables for the map, player and camera
@@ -40,10 +56,13 @@ public class World {
 	private int numberOfPylonsActivated = 0;
 
 	// Keep track of the current selected object
-	boolean isAnythingSelected = false;
-	int selectedIndex = -1;
+	private boolean isAnythingSelected = false;
+	private int selectedIndex = -1;
 
 	// Construct the World
+	/**
+	 * @throws SlickException Constructor of the World
+	 */
 	public World() throws SlickException {
 		map = new TiledMap(mapLocation);
 		camera = new Camera(map, map.getWidth() * map.getTileWidth(), map.getHeight() * map.getTileHeight());
@@ -52,6 +71,11 @@ public class World {
 		loadInitialObjects();
 	}
 
+	/**
+	 * @param input input of the user
+	 * @param delta time since last update
+	 * @throws SlickException Update method of the world
+	 */
 	public void update(Input input, int delta) throws SlickException {
 
 		lastInput = input;
@@ -118,6 +142,9 @@ public class World {
 
 	}
 
+	/**
+	 * @param g Render method of the World
+	 */
 	public void render(Graphics g) {
 
 		// If the user pressed WASD, the camera should follow WASD primaryly
@@ -171,10 +198,6 @@ public class World {
 					objectsList.add(new Pylon(x, y));
 				} else if (name.equals("engineer")) {
 					objectsList.add(new Engineer(x, y));
-				} else if (name.contentEquals("scout")) {
-					objectsList.add(new Scout(x, y));
-				} else if (name.contentEquals("factory")) {
-					objectsList.add(new Factory(x, y));
 				}
 			}
 		} catch (IOException e) {
@@ -184,62 +207,106 @@ public class World {
 
 	// Check if the current tile is solid or occupied
 	// Copied from the model answer, slightly modified
+	/**
+	 * @param pos
+	 * @return true if the potential position is not solid, false otherwise
+	 */
 	public static boolean isPositionFree(Vector2f pos) {
 		int tileId = map.getTileId((int) (pos.x / map.getTileWidth()), (int) (pos.y / map.getTileHeight()), 0);
 		return !Boolean.parseBoolean(map.getTileProperty(tileId, World.SOLID_PROPERTY, "false"));
 	}
 
+	/**
+	 * @param pos
+	 * @return true if the potential position is not occupied, false otherwise
+	 */
 	public static boolean isPositionNotOccupied(Vector2f pos) {
 		int tileId = map.getTileId((int) (pos.x / map.getTileWidth()), (int) (pos.y / map.getTileHeight()), 0);
 		return !Boolean.parseBoolean(map.getTileProperty(tileId, World.OCCUPIED_PROPERTY, "false"));
 	}
 
+	/**
+	 * @return the last input by user
+	 */
 	public Input getInput() {
 		return lastInput;
 	}
 
+	/**
+	 * @return the time passed by the lase update calling
+	 */
 	public int getDelta() {
 		return lastDelta;
 	}
 
+	/**
+	 * Reset all objects to unselected
+	 */
 	public void resetSelection() {
 		for (int i = 0; i < objectsList.size(); i++) {
 			objectsList.get(i).setSelected(false);
 		}
 	}
 
+	/**
+	 * @return the current amount of metal
+	 */
 	public int getCurrMetal() {
 		return currMetal;
 	}
 
+	/**
+	 * @param currMetal Set the current amount of metal
+	 */
 	public void setCurrMetal(int currMetal) {
 		this.currMetal = currMetal;
 	}
 
+	/**
+	 * @return the current amount of unobtainium
+	 */
 	public int getCurrUnobtain() {
 		return currUnobtain;
 	}
 
+	/**
+	 * @param currUnobtain Set the current amount of unobtainium
+	 */
 	public void setCurrUnobtain(int currUnobtain) {
 		this.currUnobtain = currUnobtain;
 	}
 
+	/**
+	 * @return the camera
+	 */
 	public Camera getCamera() {
 		return this.camera;
 	}
 
+	/**
+	 * @return the list that contains all the objects
+	 */
 	public ArrayList<Objects> getList() {
 		return this.objectsList;
 	}
 
+	/**
+	 * @return the number of Pylon activated
+	 */
 	public int getNumberOfPylonsActivated() {
 		return numberOfPylonsActivated;
 	}
 
+	/**
+	 * @param numberOfPylonsActivated Set the number of Pylon activated
+	 */
 	public void setNumberOfPylonsActivated(int numberOfPylonsActivated) {
 		this.numberOfPylonsActivated = numberOfPylonsActivated;
 	}
 
+	/**
+	 * @return map
+	 */
 	public TiledMap getMap() {
 		return World.map;
 	}

@@ -4,11 +4,27 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
+/**
+ * Engineer, a type of units, can mine mines automatically
+ *
+ */
 public class Engineer extends Units {
 
+	/**
+	 * Location of the engineer's image
+	 */
 	public static final String imageLocation = "assets/units/engineer.png";
+	/**
+	 * Speed of a engineer
+	 */
 	public static final float ENGINEER_SPEED = 0.1f;
+	/**
+	 * Mining time of a engineer
+	 */
 	public static final int MINING_TIME = 5;
+	/**
+	 * Maximum carrying amount when no pylon is activated
+	 */
 	public static final int STARTING_AMOUNT = 2;
 
 	private boolean isMining = false;
@@ -18,12 +34,21 @@ public class Engineer extends Units {
 	private Resources targetMine;
 	private Commandcentre targetCC;
 
+	/**
+	 * @param x
+	 * @param y
+	 * @throws SlickException
+	 * Constructor, call when creating a new engineer
+	 */
 	public Engineer(float x, float y) throws SlickException {
 		super(x, y);
 		this.setImage(new Image(imageLocation));
 		this.setSpeed(ENGINEER_SPEED);
 	}
 
+	/* (non-Javadoc)
+	 * @see Units#update(World)
+	 */
 	@Override
 	public void update(World world) throws SlickException {
 		if (!isMining) {

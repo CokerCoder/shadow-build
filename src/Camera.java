@@ -11,6 +11,9 @@ import org.newdawn.slick.tiled.TiledMap;
 
 public class Camera {
 
+	/**
+	 * Speed of camera movement when using keyboard controlling
+	 */
 	public static final float CAMERA_MOVING_SPEED = 0.4f;
 
 	// Amount of pixels need to be transfered when renedering the map
@@ -29,7 +32,12 @@ public class Camera {
 
 	private boolean isFollowingWASD = false;
 
-	// Camera constructor
+	/**
+	 * @param map
+	 * @param mapWidth
+	 * @param mapHeight
+	 * Constructor, call when initialize the world
+	 */
 	public Camera(TiledMap map, int mapWidth, int mapHeight) {
 		transX = 0;
 		transY = 0;
@@ -43,8 +51,13 @@ public class Camera {
 
 		this.lastTransPos = new Vector2f(App.WINDOW_WIDTH / 2, App.WINDOW_HEIGHT / 2);
 	}
-
-	// Calculate the movement along the x and y axis
+	
+	/**
+	 * @param g
+	 * @param x
+	 * @param y
+	 * Translate the showing area based on a position
+	 */
 	public void translate(Graphics g, float x, float y) {
 
 		/*
@@ -83,7 +96,11 @@ public class Camera {
 		viewPort.setY(-transY);
 	}
 
-	// Method to translate the map based on the WASD keys
+	
+	/**
+	 * @param world
+	 * Translate the showing area based on the WASD controlling
+	 */
 	public void translateWASD(World world) {
 		if (world.getInput().isKeyDown(Input.KEY_A)) {
 			this.isFollowingWASD = true;
@@ -110,25 +127,39 @@ public class Camera {
 		}
 	}
 
-	// Hepler method to calculate a point position in a World perpective (the total
-	// map)
-	// based on its window position and the camera position in the World
+	/**
+	 * @param cameraX
+	 * @return the current X coordinate in the perspective of the whole world
+	 */
 	public float calcWorldX(float cameraX) {
 		return cameraX + viewPort.getX();
 	}
-
+	/**
+	 * @param cameraY
+	 * @return same as above, but Y coordinate
+	 */
 	public float calcWorldY(float cameraY) {
 		return cameraY + viewPort.getY();
 	}
 
+	/**
+	 * @return the last translate position
+	 */
 	public Vector2f getLastTransPos() {
 		return lastTransPos;
 	}
 
+	/**
+	 * @return true if the camera is currently following WASD, false otherwise
+	 */
 	public boolean getWASD() {
 		return this.isFollowingWASD;
 	}
 
+	/**
+	 * @param isFollowingWASD
+	 * Set whether the camera should follow WASD
+	 */
 	public void setWASD(boolean isFollowingWASD) {
 		this.isFollowingWASD = isFollowingWASD;
 	}

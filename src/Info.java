@@ -2,15 +2,33 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.Graphics;
 
-// Class contains all the information needed to be display on the screen
+/**
+ * Contains all information the user need to be displayed on the screen
+ *
+ */
 public class Info {
 
+	/**
+	 * Drawing position 1
+	 */
 	public static final int DRAW_STRING_A = 32;
+	/**
+	 * Drawing position 2
+	 */
 	public static final int DRAW_STRING_B = 100;
 
+	/**
+	 * A constructor, do nothing
+	 */
 	public Info() {
 	}
-
+	
+	/**
+	 * @param world
+	 * @param g
+	 * @param list
+	 * Rendering all onto the screen
+	 */
 	public void renderInfo(World world, Graphics g, ArrayList<Objects> list) {
 
 		g.drawString("Metal:  " + world.getCurrMetal() + "\nUnobtainium:  " + world.getCurrUnobtain(),

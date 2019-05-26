@@ -2,24 +2,52 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+/**
+ * Command centre, inherited from Buildings
+ *
+ */
 public class Commandcentre extends Buildings {
 
+	/**
+	 * Location of the commandcentre image
+	 */
 	public static final String IMAGE_LOCATION = "assets/buildings/command_centre.png";
 
+	/**
+	 * Time needed to train a unit
+	 */
 	public static final int TRAINING_TIME = 5;
+	/**
+	 * Cost to train a Scout
+	 */
 	public static final int SCOUT_COST = 5;
+	/**
+	 * Cost to train a builder
+	 */
 	public static final int BUILDER_COST = 10;
+	/**
+	 * Cost to train a engineer
+	 */
 	public static final int ENGINEER_COST = 20;
 
 	private boolean isTraining = false;
 	private int trainingTime = 0;
 	private int trainingType = 0;
 
+	/**
+	 * @param x
+	 * @param y
+	 * @throws SlickException
+	 * Constructor, call when creating a new command centre
+	 */
 	public Commandcentre(float x, float y) throws SlickException {
 		super(x, y);
 		super.setImage(new Image(IMAGE_LOCATION));
 	}
 
+	/* (non-Javadoc)
+	 * @see Objects#update(World)
+	 */
 	@Override
 	public void update(World world) throws SlickException {
 
