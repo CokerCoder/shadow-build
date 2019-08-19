@@ -105,6 +105,7 @@ public class Engineer extends Units {
 				} else if (this.targetMine.getAmount() <= 0) {
 					this.isMining = false;
 					this.miningTime = 0;
+					
 					return;
 				}
 			}
